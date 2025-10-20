@@ -1,25 +1,92 @@
-﻿// Buying inventory
+﻿
 
 
-Console.Write("The following items are available:\n1 - Rope\n2 - Torches\n3 - Climbing Equipment\n4 - Clean Water\n5 - Machete\n6 - Canoe\n7 - Food Supplies\nWhat number do you want to see the price of? ");
-int item = Convert.ToInt32(Console.ReadLine());
-Console.Write("What is your name? ");
-float priceModifier = Console.ReadLine() == "Constantin" ? 2f : 1f; // Apply a discount for Constantin, who helped the shopkeeper by writing this program.
-string cost;
 
-cost = item switch
+// The Magic Cannon
+for (int turn = 1; turn < 100; turn++)
 {
-    1 => $"Rope costs {10 / priceModifier} gold.",
-    2 => $"Torches cost {15 / priceModifier} gold.",
-    3 => $"Climbing equipment costs {25 / priceModifier} gold.",
-    4 => $"Clean Water costs {1 / priceModifier} gold.",
-    5 => $"Machete costs {20 / priceModifier} gold.",
-    6 => $"Canoe costs {200 / priceModifier} gold.",
-    7 => $"Food supplies cost {1 / priceModifier} gold.",
-    _ => $"An invalid number was inputted ({item}). Please input a valid item number (1-7)."
-};
+    string blastType = "Normal";
+    bool thirdTurn = turn % 3 == 0;
+    bool fifthTurn = turn % 5 == 0;
+    if (thirdTurn && fifthTurn) // Both gems activate
+    {
+        blastType = "Electric & Fire";
+        Console.ForegroundColor = ConsoleColor.Blue;
+    }
+    else if (thirdTurn) // Every third turn of the crank, the fire gem activates
+    {
+        blastType = "Fire";
+        Console.ForegroundColor = ConsoleColor.Red;
+    }
+    else if (fifthTurn) // Every fifth turn of the crank, the electric gem activates
+    {
+        blastType = "Electric";
+        Console.ForegroundColor = ConsoleColor.Yellow;
+    }
+    else
+    {
+        Console.ForegroundColor = ConsoleColor.White; // Reset text color for normal blasts
+    }
+    Console.WriteLine($"{turn}: {blastType}");
+}
 
-Console.WriteLine(cost);
+
+// The Prototype (Pilot & Hunter coordinate on hitting a target)-
+//Console.Write("User 1, enter a number between 0 and 100: ");
+//int num = Convert.ToInt32(Console.ReadLine());
+
+//// Ensure valid number (0-100)
+//while (num < 0 || num > 100)
+//{
+//    Console.Write("User 1, enter a number between 0 and 100: ");
+//    num = Convert.ToInt32(Console.ReadLine());
+//}
+
+//Console.Clear();
+//Console.WriteLine("User 2, guess the number.");
+//Console.Write("What is your next guess? ");
+//int guess = Convert.ToInt32(Console.ReadLine());
+
+//// Guide hunter to the number
+//while (guess != num)
+//{    
+//    if (guess < num)
+//    {
+//        Console.WriteLine(guess + " is too low.");
+//    }
+//    else
+//    {
+//        Console.WriteLine(guess + " is too high.");
+//    }
+
+//    Console.Write("What is your next guess? ");
+//    guess = Convert.ToInt32(Console.ReadLine());
+//}
+
+//Console.WriteLine("You guessed the number!");
+//Console.Beep();
+
+
+//// Buying inventory
+//Console.Write("The following items are available:\n1 - Rope\n2 - Torches\n3 - Climbing Equipment\n4 - Clean Water\n5 - Machete\n6 - Canoe\n7 - Food Supplies\nWhat number do you want to see the price of? ");
+//int item = Convert.ToInt32(Console.ReadLine());
+//Console.Write("What is your name? ");
+//float priceModifier = Console.ReadLine() == "Constantin" ? 0.5f : 1f; // Apply a discount for Constantin, who helped the shopkeeper by writing this program.
+//string cost;
+
+//cost = item switch
+//{
+//    1 => $"Rope costs {10 * priceModifier} gold.",
+//    2 => $"Torches cost {15 * priceModifier} gold.",
+//    3 => $"Climbing equipment costs {25 * priceModifier} gold.",
+//    4 => $"Clean Water costs {1 * priceModifier} gold.",
+//    5 => $"Machete costs {20 * priceModifier} gold.",
+//    6 => $"Canoe costs {200 * priceModifier} gold.",
+//    7 => $"Food supplies cost {1 * priceModifier} gold.",
+//    _ => $"An invalid number was inputted ({item}). Please input a valid item number (1-7)."
+//};
+
+//Console.WriteLine(cost);
 
 
 // Watchtower
