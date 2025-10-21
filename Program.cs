@@ -1,32 +1,124 @@
-﻿
-// METHODS
+﻿// -- MEMORY --
 
-// Countdown, using recursion instead of a for loop
+// Hunting the Manticore (Boss Battle challenge)
 
-int startingNum = AskForNumber(1);
+// Initial HP
+int shipHealth = 10;
+int cityHealth = 15;
 
-Countdown(startingNum);
-Console.Beep();
-Console.WriteLine("Countdown complete!");
+// Config
+int RANGE_MIN = 0;
+int RANGE_MAX = 100;
 
-int AskForNumber(int min)
+int shipDistance = AskForNumberInRange("Player 1, how far away from the city do you want to station the Manticore? ", RANGE_MIN, RANGE_MAX);
+
+Console.Clear();
+Console.WriteLine("Player 2, it is your turn.");
+for (int round = 1; round <= 15; round++)
 {
-    Console.WriteLine($"Input a number above {min}.");
-    int num = Convert.ToInt32(Console.ReadLine());
-    while (num <= min)
+    Console.WriteLine("-----------------------------------------------------");
+    Console.WriteLine($"STATUS: Round: {round}  City: {cityHealth}/15  Manticore: {shipHealth}/10");
+    int damage = GetCannonDamage(round);
+    Console.WriteLine($"The cannon is expected to deal {damage} damage this round.");
+    int desiredRange = AskForNumberInRange("Enter desired cannon range: ", RANGE_MIN, RANGE_MAX);
+    DamageManticore(desiredRange, damage);
+
+    // End the game if the ship has been destroyed
+    if (shipHealth <= 0)
     {
-        Console.WriteLine($"Let's try again. Input a number above {min}.");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("The Manticore has been destroyed! The city of Consolas has been saved!");
+        Console.ForegroundColor = ConsoleColor.White;
+        break;
+    }
+      
+    // Damage the city, and end the gaem if the city's health is 0
+    cityHealth -= 1;
+    if (cityHealth <= 0)        
+    {          
+        Console.ForegroundColor = ConsoleColor.Red;          
+        Console.WriteLine("The city of Consolas has been destroyed! The Uncoded One has won. It is a dark day...");
+        Console.ForegroundColor = ConsoleColor.White;
+        break;      
+    }
+}
+
+void DamageManticore(int desiredRange, int damage)
+{
+    if (desiredRange < shipDistance)
+    {
+        Console.WriteLine("That round FELL SHORT of the target.");
+    }
+    else if (desiredRange > shipDistance)
+    {
+        Console.WriteLine("That round OVERSHOT the target.");
+    }
+    else
+    {
+        Console.WriteLine("That round was a DIRECT HIT!");
+        shipHealth -= damage;
+    }
+}
+int GetCannonDamage(int round)
+{
+    int damage = 1;
+    bool thirdTurn = round % 3 == 0;
+    bool fifthTurn = round % 5 == 0;
+    if (thirdTurn && fifthTurn) // Damage from both gems
+    {
+        damage = 10;
+    }
+    else if (thirdTurn) // Every third turn of the crank, the fire gem activates
+    {
+        damage = 3;
+    }
+    else if (fifthTurn) // Every fifth turn of the crank, the electric gem activates
+    {
+        damage = 3;
+    }
+    return damage;
+}
+
+int AskForNumberInRange(string text, int min, int max)
+{
+    Console.Write(text);
+    int num = Convert.ToInt32(Console.ReadLine());
+    while (num < min || num > max)
+    {
+        Console.WriteLine($"Let's try again. Input a number between {min} and {max}.");
         num = Convert.ToInt32(Console.ReadLine());
     }
-    Console.Clear();
     return num;
 }
 
-void Countdown(int num)
-{
-    Console.WriteLine(num);
-    if (num != 1) Countdown(num - 1); 
-}
+// METHODS
+
+// Countdown, using recursion
+
+//int startingNum = AskForNumber(1);
+
+//Countdown(startingNum);
+//Console.Beep();
+//Console.WriteLine("Countdown complete!");
+
+//int AskForNumber(int min)
+//{
+//    Console.WriteLine($"Input a number above {min}.");
+//    int num = Convert.ToInt32(Console.ReadLine());
+//    while (num <= min)
+//    {
+//        Console.WriteLine($"Let's try again. Input a number above {min}.");
+//        num = Convert.ToInt32(Console.ReadLine());
+//    }
+//    Console.Clear();
+//    return num;
+//}
+
+//void Countdown(int num)
+//{
+//    Console.WriteLine(num);
+//    if (num != 1) Countdown(num - 1); 
+//}
 
 // Taking a Number
 // Text: number-related question for the user
@@ -53,7 +145,7 @@ void Countdown(int num)
 //int numberWithinRange = AskForNumberInRange("I really like the numbers between 5 and 12. Please input a number between them.", 5, 12);
 
 
-// ARRAYS
+// -- ARRAYS --
 
 // The Laws of Freach
 //int[] array = new int[] { 4, 51, -7, 13, -99, 15, -8, 45, 90 };
