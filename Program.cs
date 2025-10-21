@@ -1,55 +1,138 @@
 ﻿
+// METHODS
 
+// Countdown, using recursion instead of a for loop
 
+int startingNum = AskForNumber(1);
 
-// The Magic Cannon
-for (int turn = 1; turn < 100; turn++)
+Countdown(startingNum);
+Console.Beep();
+Console.WriteLine("Countdown complete!");
+
+int AskForNumber(int min)
 {
-    string blastType = "Normal";
-    bool thirdTurn = turn % 3 == 0;
-    bool fifthTurn = turn % 5 == 0;
-    if (thirdTurn && fifthTurn) // Both gems activate
+    Console.WriteLine($"Input a number above {min}.");
+    int num = Convert.ToInt32(Console.ReadLine());
+    while (num <= min)
     {
-        blastType = "Electric & Fire";
-        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine($"Let's try again. Input a number above {min}.");
+        num = Convert.ToInt32(Console.ReadLine());
     }
-    else if (thirdTurn) // Every third turn of the crank, the fire gem activates
-    {
-        blastType = "Fire";
-        Console.ForegroundColor = ConsoleColor.Red;
-    }
-    else if (fifthTurn) // Every fifth turn of the crank, the electric gem activates
-    {
-        blastType = "Electric";
-        Console.ForegroundColor = ConsoleColor.Yellow;
-    }
-    else
-    {
-        Console.ForegroundColor = ConsoleColor.White; // Reset text color for normal blasts
-    }
-    Console.WriteLine($"{turn}: {blastType}");
+    Console.Clear();
+    return num;
 }
 
+void Countdown(int num)
+{
+    Console.WriteLine(num);
+    if (num != 1) Countdown(num - 1); 
+}
+
+// Taking a Number
+// Text: number-related question for the user
+//int AskForNumber(string text)
+//{
+//    Console.WriteLine(text);
+//    return Convert.ToInt32(Console.ReadLine());
+//}
+
+//int AskForNumberInRange(string text, int min, int max)
+//{
+//    Console.WriteLine(text);
+//    Console.WriteLine($"Input a number between {min} and {max}.");
+//    int num = Convert.ToInt32(Console.ReadLine());
+//    while (num < min || num > max)
+//    {
+//        Console.WriteLine($"Let's try again. Input a number between {min} and {max}.");
+//        num = Convert.ToInt32(Console.ReadLine());
+//    }
+//    return num;
+//}
+
+//int result = AskForNumber("What is the distance between New York City and Boston?");
+//int numberWithinRange = AskForNumberInRange("I really like the numbers between 5 and 12. Please input a number between them.", 5, 12);
+
+
+// ARRAYS
+
+// The Laws of Freach
+//int[] array = new int[] { 4, 51, -7, 13, -99, 15, -8, 45, 90 };
+
+//int total = 0;
+//foreach (int num in array)
+//{
+//    total += num;
+//}
+//float average = (float)total / array.Length;
+//Console.WriteLine("Average value:" + average);
+
+
+// The Replicator of D'To
+//int len = 5;
+//int[] array = new int[len];
+
+//Console.WriteLine("Please input 5 numbers.");
+
+//// Insert values into the array
+//for (int i = 0; i < len; i++)
+//{
+//    array[i] = Convert.ToInt32(Console.ReadLine());
+//}
+
+//// Move values into a 2nd array
+//int[] array2 = new int[len];
+//for (int i = 0; i < len; i++)
+//{
+//    array2[i] = array[i];
+//}
+
+//// Demonstrate that the arrays contain the same values
+//Console.WriteLine($"{"Array 1", 21}   {"Array 2", 9}"); // Align the array names with the number output
+//for (int i = 0; i < len; i++)
+//{
+//    Console.WriteLine($"Index {i + 1}: {array[i], 9} {array2[i], 11}");
+//}
+
+// -- LOOPS --
+
+// The Magic Cannon
+//for (int turn = 1; turn <= 100; turn++)
+//{
+//    string blastType = "Normal";
+//    bool thirdTurn = turn % 3 == 0;
+//    bool fifthTurn = turn % 5 == 0;
+//    if (thirdTurn && fifthTurn) // Both gems activate
+//    {
+//        blastType = "Electric & Fire";
+//        Console.ForegroundColor = ConsoleColor.Blue;
+//    }
+//    else if (thirdTurn) // Every third turn of the crank, the fire gem activates
+//    {
+//        blastType = "Fire";
+//        Console.ForegroundColor = ConsoleColor.Red;
+//    }
+//    else if (fifthTurn) // Every fifth turn of the crank, the electric gem activates
+//    {
+//        blastType = "Electric";
+//        Console.ForegroundColor = ConsoleColor.Yellow;
+//    }
+//    else
+//    {
+//        Console.ForegroundColor = ConsoleColor.White; // Reset text color for normal blasts
+//    }
+//    Console.WriteLine($"{turn}: {blastType}");
+//}
 
 // The Prototype (Pilot & Hunter coordinate on hitting a target)-
-//Console.Write("User 1, enter a number between 0 and 100: ");
-//int num = Convert.ToInt32(Console.ReadLine());
-
-//// Ensure valid number (0-100)
-//while (num < 0 || num > 100)
-//{
-//    Console.Write("User 1, enter a number between 0 and 100: ");
-//    num = Convert.ToInt32(Console.ReadLine());
-//}
+//int num = AskForNumberInRange("User 1, enter a number between 0 and 100: ", 0, 100);
 
 //Console.Clear();
 //Console.WriteLine("User 2, guess the number.");
-//Console.Write("What is your next guess? ");
-//int guess = Convert.ToInt32(Console.ReadLine());
+//int guess = AskForNumber("What is your next guess? ");
 
 //// Guide hunter to the number
 //while (guess != num)
-//{    
+//{
 //    if (guess < num)
 //    {
 //        Console.WriteLine(guess + " is too low.");
@@ -58,14 +141,31 @@ for (int turn = 1; turn < 100; turn++)
 //    {
 //        Console.WriteLine(guess + " is too high.");
 //    }
-
-//    Console.Write("What is your next guess? ");
-//    guess = Convert.ToInt32(Console.ReadLine());
+//    guess = AskForNumber("What is your next guess? ");
 //}
 
 //Console.WriteLine("You guessed the number!");
 //Console.Beep();
 
+//int AskForNumber(string text)
+//{
+//    Console.Write(text);
+//    return Convert.ToInt32(Console.ReadLine());
+//}
+
+//int AskForNumberInRange(string text, int min, int max)
+//{
+//    Console.Write(text);
+//    int num = Convert.ToInt32(Console.ReadLine());
+//    while (num < min || num > max)
+//    {
+//        Console.WriteLine($"Let's try again. Input a number between {min} and {max}.");
+//        num = Convert.ToInt32(Console.ReadLine());
+//    }
+//    return num;
+//}
+
+// -- SWITCH --
 
 //// Buying inventory
 //Console.Write("The following items are available:\n1 - Rope\n2 - Torches\n3 - Climbing Equipment\n4 - Clean Water\n5 - Machete\n6 - Canoe\n7 - Food Supplies\nWhat number do you want to see the price of? ");
@@ -88,6 +188,7 @@ for (int turn = 1; turn < 100; turn++)
 
 //Console.WriteLine(cost);
 
+// -- IF STATEMENTS --
 
 // Watchtower
 //Console.Write("Input an x coordinate value. ");
@@ -146,6 +247,7 @@ for (int turn = 1; turn < 100; turn++)
 //Console.WriteLine($"Desploy to:\n({row},{column - 1}) \n({row - 1},{column}) \n({row},{column + 1}) \n({row + 1},{column})");
 //Console.Beep();
 
+// -- MATH OPERATIONS --
 
 //Dominion of Kings
 
