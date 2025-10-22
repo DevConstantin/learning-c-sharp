@@ -1,95 +1,151 @@
-﻿// -- MEMORY --
+﻿
+// -- Enum -- 
+// Simula's Test
+
+ChestState current = ChestState.Locked;
+
+while (true) {
+    WriteMessage();
+    string desiredAction = Console.ReadLine();
+    AdvanceState(desiredAction);
+}
+
+// Format a message for the user based on the current chest state
+void WriteMessage()
+{
+    string stateStr;
+    if (current == ChestState.Open)
+    {
+        stateStr = "open";
+    }
+    else if (current == ChestState.Closed)
+    {
+        stateStr = "unlocked";
+    }
+    else
+    {
+        stateStr = "locked";
+    }
+    Console.Write($"The chest is {stateStr}. What do you want to do? ");
+}
+
+// Advance the chest to its next stage, depending on inputted desired action
+void AdvanceState(string desiredAction)
+{   
+    if ((current == ChestState.Open && desiredAction == "close") || (current == ChestState.Locked && desiredAction == "unlock"))
+    {
+        current = ChestState.Closed;
+    }
+    else if (current == ChestState.Closed && desiredAction == "lock")
+    {
+        current = ChestState.Locked;
+    }
+    else if (current == ChestState.Closed && desiredAction == "open")
+    {
+        current = ChestState.Open;
+    }
+    else
+    {
+        Console.WriteLine("Invalid action.");
+    }
+}
+
+enum ChestState { Open, Closed, Locked };
+
+
+
+// -- MEMORY --
 
 // Hunting the Manticore (Boss Battle challenge)
 
 // Initial HP
-int shipHealth = 10;
-int cityHealth = 15;
+//int shipHealth = 10;
+//int cityHealth = 15;
 
-// Config
-int RANGE_MIN = 0;
-int RANGE_MAX = 100;
+//// Config
+//int RANGE_MIN = 0;
+//int RANGE_MAX = 100;
 
-int shipDistance = AskForNumberInRange("Player 1, how far away from the city do you want to station the Manticore? ", RANGE_MIN, RANGE_MAX);
+//int shipDistance = AskForNumberInRange("Player 1, how far away from the city do you want to station the Manticore? ", RANGE_MIN, RANGE_MAX);
 
-Console.Clear();
-Console.WriteLine("Player 2, it is your turn.");
-for (int round = 1; round <= 15; round++)
-{
-    Console.WriteLine("-----------------------------------------------------");
-    Console.WriteLine($"STATUS: Round: {round}  City: {cityHealth}/15  Manticore: {shipHealth}/10");
-    int damage = GetCannonDamage(round);
-    Console.WriteLine($"The cannon is expected to deal {damage} damage this round.");
-    int desiredRange = AskForNumberInRange("Enter desired cannon range: ", RANGE_MIN, RANGE_MAX);
-    DamageManticore(desiredRange, damage);
+//Console.Clear();
+//Console.WriteLine("Player 2, it is your turn.");
+//for (int round = 1; round < 15; round++)
+//{
+//    Console.WriteLine("-----------------------------------------------------");
+//    Console.WriteLine($"STATUS: Round: {round}  City: {cityHealth}/15  Manticore: {shipHealth}/10");
+//    int damage = GetCannonDamage(round);
+//    Console.WriteLine($"The cannon is expected to deal {damage} damage this round.");
+//    int desiredRange = AskForNumberInRange("Enter desired cannon range: ", RANGE_MIN, RANGE_MAX);
+//    DamageManticore(desiredRange, damage);
 
-    // End the game if the ship has been destroyed
-    if (shipHealth <= 0)
-    {
-        Console.ForegroundColor = ConsoleColor.Blue;
-        Console.WriteLine("The Manticore has been destroyed! The city of Consolas has been saved!");
-        Console.ForegroundColor = ConsoleColor.White;
-        break;
-    }
-      
-    // Damage the city, and end the gaem if the city's health is 0
-    cityHealth -= 1;
-    if (cityHealth <= 0)        
-    {          
-        Console.ForegroundColor = ConsoleColor.Red;          
-        Console.WriteLine("The city of Consolas has been destroyed! The Uncoded One has won. It is a dark day...");
-        Console.ForegroundColor = ConsoleColor.White;
-        break;      
-    }
-}
+//    // End the game if the ship has been destroyed
+//    if (shipHealth <= 0)
+//    {
+//        Console.ForegroundColor = ConsoleColor.Blue;
+//        Console.WriteLine("The Manticore has been destroyed! The city of Consolas has been saved!");
+//        Console.ForegroundColor = ConsoleColor.White;
+//        break;
+//    }
 
-void DamageManticore(int desiredRange, int damage)
-{
-    if (desiredRange < shipDistance)
-    {
-        Console.WriteLine("That round FELL SHORT of the target.");
-    }
-    else if (desiredRange > shipDistance)
-    {
-        Console.WriteLine("That round OVERSHOT the target.");
-    }
-    else
-    {
-        Console.WriteLine("That round was a DIRECT HIT!");
-        shipHealth -= damage;
-    }
-}
-int GetCannonDamage(int round)
-{
-    int damage = 1;
-    bool thirdTurn = round % 3 == 0;
-    bool fifthTurn = round % 5 == 0;
-    if (thirdTurn && fifthTurn) // Damage from both gems
-    {
-        damage = 10;
-    }
-    else if (thirdTurn) // Every third turn of the crank, the fire gem activates
-    {
-        damage = 3;
-    }
-    else if (fifthTurn) // Every fifth turn of the crank, the electric gem activates
-    {
-        damage = 3;
-    }
-    return damage;
-}
+//    // Damage the city, and end the gaem if the city's health is 0
+//    cityHealth -= 1;
+//    if (cityHealth <= 0)
+//    {
+//        Console.ForegroundColor = ConsoleColor.Red;
+//        Console.WriteLine("The city of Consolas has been destroyed! The Uncoded One has won. It is a dark day...");
+//        Console.ForegroundColor = ConsoleColor.White;
+//        break;
+//    }
+//}
 
-int AskForNumberInRange(string text, int min, int max)
-{
-    Console.Write(text);
-    int num = Convert.ToInt32(Console.ReadLine());
-    while (num < min || num > max)
-    {
-        Console.WriteLine($"Let's try again. Input a number between {min} and {max}.");
-        num = Convert.ToInt32(Console.ReadLine());
-    }
-    return num;
-}
+//void DamageManticore(int desiredRange, int damage)
+//{
+//    if (desiredRange < shipDistance)
+//    {
+//        Console.WriteLine("That round FELL SHORT of the target.");
+//    }
+//    else if (desiredRange > shipDistance)
+//    {
+//        Console.WriteLine("That round OVERSHOT the target.");
+//    }
+//    else
+//    {
+//        Console.WriteLine("That round was a DIRECT HIT!");
+//        shipHealth -= damage;
+//    }
+//}
+//int GetCannonDamage(int round)
+//{
+//    int damage = 1;
+//    bool thirdTurn = round % 3 == 0;
+//    bool fifthTurn = round % 5 == 0;
+//    if (thirdTurn && fifthTurn) // Damage from both gems
+//    {
+//        damage = 10;
+//    }
+//    else if (thirdTurn) // Every third turn of the crank, the fire gem activates
+//    {
+//        damage = 3;
+//    }
+//    else if (fifthTurn) // Every fifth turn of the crank, the electric gem activates
+//    {
+//        damage = 3;
+//    }
+//    return damage;
+//}
+
+//int AskForNumberInRange(string text, int min, int max)
+//{
+//    Console.Write(text);
+//    int num = Convert.ToInt32(Console.ReadLine());
+//    while (num < min || num > max)
+//    {
+//        Console.WriteLine($"Let's try again. Input a number between {min} and {max}.");
+//        num = Convert.ToInt32(Console.ReadLine());
+//    }
+//    return num;
+//}
 
 // METHODS
 
