@@ -1,56 +1,118 @@
 ﻿
+// Tuples
+(SoupType type, Ingredient ingredient, Seasoning seasoning) soup = (SoupType.soup, Ingredient.potatoes, Seasoning.salty);
+
+Console.WriteLine(" -HEARTY SOUPS-");
+
+Console.WriteLine("Choose a type (1-3): \n1. Soup\n2. Stew\n3. Gumbo ");
+int desiredType = Convert.ToInt32(Console.ReadLine());
+switch (desiredType)
+{
+    case 1:
+        soup.type = SoupType.soup;
+        break;
+    case 2:
+        soup.type = SoupType.stew;
+        break;
+    case 3:
+        soup.type = SoupType.gumbo;
+        break;
+}
+
+Console.Clear();
+Console.WriteLine("Choose an ingredient (1-4): \n1. Mushrooms\n2. Chicken\n3. Carrots\n4. Potatoes ");
+int desiredIngredient = Convert.ToInt32(Console.ReadLine());
+switch (desiredIngredient) {
+    case 1: 
+        soup.ingredient = Ingredient.mushrooms;    
+        break;
+    case 2:
+        soup.ingredient = Ingredient.chicken;
+        break;
+    case 3:
+        soup.ingredient = Ingredient.carrots;
+        break;
+    case 4:
+        soup.ingredient = Ingredient.potatoes;
+        break;
+}
+
+Console.Clear();
+Console.WriteLine("Choose a seasoning (1-3): \n1. Spicy\n2. Salty\n3. Sweet");
+int desiredSeasoning = Convert.ToInt32(Console.ReadLine());
+switch (desiredSeasoning)
+{
+    case 1:
+        soup.seasoning = Seasoning.spicy;
+        break;
+    case 2:
+        soup.seasoning = Seasoning.salty;
+        break;
+    case 3:
+        soup.seasoning = Seasoning.sweet;
+        break;
+}
+
+Console.Beep();
+Console.WriteLine($"\n{soup.type} {soup.ingredient} {soup.seasoning}");
+
+
+enum SoupType { soup, stew, gumbo }
+enum Ingredient { mushrooms, chicken, carrots, potatoes }
+enum Seasoning { spicy, salty, sweet }
+
 // -- Enum -- 
 // Simula's Test
 
-ChestState current = ChestState.Locked;
+//ChestState current = ChestState.Locked;
 
-while (true) {
-    WriteMessage();
-    string desiredAction = Console.ReadLine();
-    AdvanceState(desiredAction);
-}
+//while (true) {
+//    WriteMessage();
+//    string desiredAction = Console.ReadLine();
+//    AdvanceState(desiredAction);
+//}
 
-// Format a message for the user based on the current chest state
-void WriteMessage()
-{
-    string stateStr;
-    if (current == ChestState.Open)
-    {
-        stateStr = "open";
-    }
-    else if (current == ChestState.Closed)
-    {
-        stateStr = "unlocked";
-    }
-    else
-    {
-        stateStr = "locked";
-    }
-    Console.Write($"The chest is {stateStr}. What do you want to do? ");
-}
+//// Format a message for the user based on the current chest state
+//void WriteMessage()
+//{
+//    string stateStr;
+//    if (current == ChestState.Open)
+//    {
+//        stateStr = "open";
+//    }
+//    else if (current == ChestState.Closed)
+//    {
+//        stateStr = "unlocked";
+//    }
+//    else
+//    {
+//        stateStr = "locked";
+//    }
+//    Console.Write($"The chest is {stateStr}. What do you want to do? ");
+//}
 
-// Advance the chest to its next stage, depending on inputted desired action
-void AdvanceState(string desiredAction)
-{   
-    if ((current == ChestState.Open && desiredAction == "close") || (current == ChestState.Locked && desiredAction == "unlock"))
-    {
-        current = ChestState.Closed;
-    }
-    else if (current == ChestState.Closed && desiredAction == "lock")
-    {
-        current = ChestState.Locked;
-    }
-    else if (current == ChestState.Closed && desiredAction == "open")
-    {
-        current = ChestState.Open;
-    }
-    else
-    {
-        Console.WriteLine("Invalid action.");
-    }
-}
+//// Advance the chest to its next stage, depending on inputted desired action
+//void AdvanceState(string desiredAction)
+//{   
+//    if ((current == ChestState.Open && desiredAction == "close") || (current == ChestState.Locked && desiredAction == "unlock"))
+//    {
+//        current = ChestState.Closed;
+//    }
+//    else if (current == ChestState.Closed && desiredAction == "lock")
+//    {
+//        current = ChestState.Locked;
+//    }
+//    else if (current == ChestState.Closed && desiredAction == "open")
+//    {
+//        current = ChestState.Open;
+//    }
+//    else
+//    {
+//        Console.WriteLine("Invalid action.");
+//    }
+//}
 
-enum ChestState { Open, Closed, Locked };
+//enum ChestState { Open, Closed, Locked };
 
 
 
