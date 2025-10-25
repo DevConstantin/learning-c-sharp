@@ -1,65 +1,213 @@
 ﻿
-// Tuples
-(SoupType type, Ingredient ingredient, Seasoning seasoning) soup = (SoupType.soup, Ingredient.potatoes, Seasoning.salty);
-
-Console.WriteLine(" -HEARTY SOUPS-");
-
-Console.WriteLine("Choose a type (1-3): \n1. Soup\n2. Stew\n3. Gumbo ");
-int desiredType = Convert.ToInt32(Console.ReadLine());
-switch (desiredType)
-{
-    case 1:
-        soup.type = SoupType.soup;
-        break;
-    case 2:
-        soup.type = SoupType.stew;
-        break;
-    case 3:
-        soup.type = SoupType.gumbo;
-        break;
-}
-
-Console.Clear();
-Console.WriteLine("Choose an ingredient (1-4): \n1. Mushrooms\n2. Chicken\n3. Carrots\n4. Potatoes ");
-int desiredIngredient = Convert.ToInt32(Console.ReadLine());
-switch (desiredIngredient) {
-    case 1: 
-        soup.ingredient = Ingredient.mushrooms;    
-        break;
-    case 2:
-        soup.ingredient = Ingredient.chicken;
-        break;
-    case 3:
-        soup.ingredient = Ingredient.carrots;
-        break;
-    case 4:
-        soup.ingredient = Ingredient.potatoes;
-        break;
-}
-
-Console.Clear();
-Console.WriteLine("Choose a seasoning (1-3): \n1. Spicy\n2. Salty\n3. Sweet");
-int desiredSeasoning = Convert.ToInt32(Console.ReadLine());
-switch (desiredSeasoning)
-{
-    case 1:
-        soup.seasoning = Seasoning.spicy;
-        break;
-    case 2:
-        soup.seasoning = Seasoning.salty;
-        break;
-    case 3:
-        soup.seasoning = Seasoning.sweet;
-        break;
-}
-
-Console.Beep();
-Console.WriteLine($"\n{soup.type} {soup.ingredient} {soup.seasoning}");
 
 
-enum SoupType { soup, stew, gumbo }
-enum Ingredient { mushrooms, chicken, carrots, potatoes }
-enum Seasoning { spicy, salty, sweet }
+// -- CLASSES --
+
+// Vin Fletcher's Arrows
+//Arrowhead arrowhead = Arrowhead.steel;
+//int desiredLength;
+//Fletching fletching = Fletching.gooseFeathers;
+
+//Console.WriteLine("Choose arrowhhead type (1-3):\n1. Steel\n2. Wood\n3. Obsidian");
+//int desiredArrowhead = Convert.ToInt32(Console.ReadLine());
+//Console.WriteLine("\nChoose desired length in cm: (60-100) ");
+//desiredLength = Convert.ToInt32(Console.ReadLine());
+//Console.WriteLine("\nChoose fletching type (1-3):\n1. Plastic\n2. Turkey Feathers\n3. Goose Feathers");
+//int desiredFletching = Convert.ToInt32(Console.ReadLine());
+
+//// Convert user selection to enums
+//switch (desiredArrowhead)
+//{
+//    case 1:
+//        arrowhead = Arrowhead.steel;
+//        break;
+//    case 2:
+//        arrowhead = Arrowhead.wood;
+//        break;
+//    case 3:
+//        arrowhead = Arrowhead.obsidian;
+//        break;
+//}
+
+//switch (desiredFletching)
+//{
+//    case 1:
+//        fletching = Fletching.plastic;
+//        break;
+//    case 2:
+//        fletching = Fletching.turkeyFeathers;
+//        break;
+//    case 3:
+//        fletching = Fletching.gooseFeathers;
+//        break;
+//}
+
+//Arrow myArrow = new(arrowhead, desiredLength, fletching);
+//Console.WriteLine("Final arrow cost: " + myArrow.GetCost());
+
+//Arrow standardArrow = new();
+//Console.WriteLine("Standard arrow cost: " + standardArrow.GetCost());
+//standardArrow.SetFletching(Fletching.gooseFeathers); // test setter function
+//Console.WriteLine("Standard arrow (goose feathers) cost: " + standardArrow.GetCost());
+
+//class Arrow
+//{
+//    private Arrowhead _arrowhead;
+//    private int _length;
+//    private Fletching _fletching;
+
+//    // setters
+//    public void SetArrowhead(Arrowhead newArrowhead)
+//    {
+//        _arrowhead = newArrowhead;
+//    }
+
+//    public void SetLength(int newLength)
+//    {
+//        _length = newLength;
+//    }
+
+//    public void SetFletching(Fletching newFletching)
+//    {
+//        _fletching = newFletching;
+//    }
+
+//    // getters
+//    public Arrowhead GetArrowhead()
+//    {
+//        return _arrowhead;
+//    }
+
+//    public int GetLength()
+//    {
+//        return _length;
+//    }
+
+//    public Fletching GetFletching()
+//    {
+//        return _fletching;
+//    }
+
+//    public float GetCost()
+//    {
+//        float arrowheadCost = 0;
+//        float lengthCost = (float)0.05 * _length; // Length cost is calculated right away, since it's straight forward
+//        float fletchingCost = 0;
+
+//        Console.WriteLine(_arrowhead + " " + _length + " " + _fletching);
+
+//        // Calculate cost of arrowhead
+//        if (_arrowhead == Arrowhead.steel)
+//        {
+//            arrowheadCost = 10;
+//        }
+//        else if (_arrowhead == Arrowhead.wood)
+//        {
+//            arrowheadCost = 3;
+//        }
+//        else if (_arrowhead == Arrowhead.obsidian)
+//        {
+//            arrowheadCost = 5;
+//        }
+
+//        // Calculate cost of fletching
+//        if (_fletching == Fletching.plastic)
+//        {
+//            fletchingCost = 10;
+//        }
+//        else if (_fletching == Fletching.turkeyFeathers)
+//        {
+//            fletchingCost = 5;
+//        }
+//        else if (_fletching == Fletching.gooseFeathers)
+//        {
+//            fletchingCost = 3;
+//        }
+
+//        return arrowheadCost + lengthCost + fletchingCost;
+//    }
+
+//    // constructors
+
+//    public Arrow()
+//    {
+//        _arrowhead = Arrowhead.wood;
+//        _length = 75;
+//        _fletching = Fletching.plastic;
+//    }
+
+//    public Arrow(Arrowhead arrowhead, int length, Fletching fletching)
+//    {
+//        _arrowhead = arrowhead;
+//        _length = length;
+//        _fletching = fletching;
+//    }
+//}
+
+//enum Arrowhead { steel, wood, obsidian }
+//enum Fletching { plastic, turkeyFeathers, gooseFeathers }
+
+// -- Tuples --
+//(SoupType type, Ingredient ingredient, Seasoning seasoning) soup = (SoupType.soup, Ingredient.potatoes, Seasoning.salty);
+
+//Console.WriteLine(" -HEARTY SOUPS-");
+
+//Console.WriteLine("Choose a type (1-3): \n1. Soup\n2. Stew\n3. Gumbo ");
+//int desiredType = Convert.ToInt32(Console.ReadLine());
+//switch (desiredType)
+//{
+//    case 1:
+//        soup.type = SoupType.soup;
+//        break;
+//    case 2:
+//        soup.type = SoupType.stew;
+//        break;
+//    case 3:
+//        soup.type = SoupType.gumbo;
+//        break;
+//}
+
+//Console.Clear();
+//Console.WriteLine("Choose an ingredient (1-4): \n1. Mushrooms\n2. Chicken\n3. Carrots\n4. Potatoes ");
+//int desiredIngredient = Convert.ToInt32(Console.ReadLine());
+//switch (desiredIngredient) 
+//{
+//    case 1: 
+//        soup.ingredient = Ingredient.mushrooms;    
+//        break;
+//    case 2:
+//        soup.ingredient = Ingredient.chicken;
+//        break;
+//    case 3:
+//        soup.ingredient = Ingredient.carrots;
+//        break;
+//    case 4:
+//        soup.ingredient = Ingredient.potatoes;
+//        break;
+//}
+
+//Console.Clear();
+//Console.WriteLine("Choose a seasoning (1-3): \n1. Spicy\n2. Salty\n3. Sweet");
+//int desiredSeasoning = Convert.ToInt32(Console.ReadLine());
+//switch (desiredSeasoning)
+//{
+//    case 1:
+//        soup.seasoning = Seasoning.spicy;
+//        break;
+//    case 2:
+//        soup.seasoning = Seasoning.salty;
+//        break;
+//    case 3:
+//        soup.seasoning = Seasoning.sweet;
+//        break;
+//}
+
+//Console.Beep();
+//Console.WriteLine($"\n{soup.type} {soup.ingredient} {soup.seasoning}");
+
+//enum SoupType { soup, stew, gumbo }
+//enum Ingredient { mushrooms, chicken, carrots, potatoes }
+//enum Seasoning { spicy, salty, sweet }
 
 // -- Enum -- 
 // Simula's Test
