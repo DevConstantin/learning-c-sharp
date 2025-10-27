@@ -4,148 +4,166 @@
 // -- CLASSES --
 
 // Vin Fletcher's Arrows
-//Arrowhead arrowhead = Arrowhead.steel;
-//int desiredLength;
-//Fletching fletching = Fletching.gooseFeathers;
+Arrow myArrow = null;
+Arrowhead arrowhead = Arrowhead.steel;
+float desiredLength;
+Fletching fletching = Fletching.gooseFeathers;
 
-//Console.WriteLine("Choose arrowhhead type (1-3):\n1. Steel\n2. Wood\n3. Obsidian");
-//int desiredArrowhead = Convert.ToInt32(Console.ReadLine());
-//Console.WriteLine("\nChoose desired length in cm: (60-100) ");
-//desiredLength = Convert.ToInt32(Console.ReadLine());
-//Console.WriteLine("\nChoose fletching type (1-3):\n1. Plastic\n2. Turkey Feathers\n3. Goose Feathers");
-//int desiredFletching = Convert.ToInt32(Console.ReadLine());
+// Let user choose an arrow type. 3 Presets, 1 custom
 
-//// Convert user selection to enums
-//switch (desiredArrowhead)
-//{
-//    case 1:
-//        arrowhead = Arrowhead.steel;
-//        break;
-//    case 2:
-//        arrowhead = Arrowhead.wood;
-//        break;
-//    case 3:
-//        arrowhead = Arrowhead.obsidian;
-//        break;
-//}
+Console.WriteLine("Which arrow type are you looking to purchase? (1-4):\n1. Elite Arrow\n2. Beginner Arrow\n3. Marksman Arrow\n4. Custom");
+int desiredArrow = Convert.ToInt32(Console.ReadLine());
+Console.Clear();
+switch (desiredArrow)
+{
+    case 1:
+        myArrow = Arrow.CreateEliteArrow();
+        break;
+    case 2:
+        myArrow = Arrow.CreateBeginnerArrow();
+        break;
+    case 3:
+        myArrow = Arrow.CreateMarksmanArrow();
+        break;
 
-//switch (desiredFletching)
-//{
-//    case 1:
-//        fletching = Fletching.plastic;
-//        break;
-//    case 2:
-//        fletching = Fletching.turkeyFeathers;
-//        break;
-//    case 3:
-//        fletching = Fletching.gooseFeathers;
-//        break;
-//}
+    // Custom arrow functionality
+    case 4:
+        Console.WriteLine("Choose arrowhhead type (1-3):\n1. Steel\n2. Wood\n3. Obsidian");
+        int desiredArrowhead = Convert.ToInt32(Console.ReadLine());
+        desiredLength = AskForNumberInRange("\nChoose desired length in cm: (60-100) ", 60, 100);
+        Console.WriteLine("\nChoose fletching type (1-3):\n1. Plastic\n2. Turkey Feathers\n3. Goose Feathers");
+        int desiredFletching = Convert.ToInt32(Console.ReadLine());
 
-//Arrow myArrow = new(arrowhead, desiredLength, fletching);
-//Console.WriteLine("Final arrow cost: " + myArrow.GetCost());
+        // Convert user selection to enums
+        switch (desiredArrowhead)
+        {
+            case 1:
+                arrowhead = Arrowhead.steel;
+                break;
+            case 2:
+                arrowhead = Arrowhead.wood;
+                break;
+            case 3:
+                arrowhead = Arrowhead.obsidian;
+                break;
+            default:
+                arrowhead = Arrowhead.wood;
+                break;
+        }
 
-//Arrow standardArrow = new();
-//Console.WriteLine("Standard arrow cost: " + standardArrow.GetCost());
-//standardArrow.SetFletching(Fletching.gooseFeathers); // test setter function
-//Console.WriteLine("Standard arrow (goose feathers) cost: " + standardArrow.GetCost());
+        switch (desiredFletching)
+        {
+            case 1:
+                fletching = Fletching.plastic;
+                break;
+            case 2:
+                fletching = Fletching.turkeyFeathers;
+                break;
+            case 3:
+                fletching = Fletching.gooseFeathers;
+                break;
+            default:
+                fletching = Fletching.gooseFeathers;
+                break;
+        }
 
-//class Arrow
-//{
-//    private Arrowhead _arrowhead;
-//    private int _length;
-//    private Fletching _fletching;
+        myArrow = new(arrowhead, desiredLength, fletching);   
+        break;
 
-//    // setters
-//    public void SetArrowhead(Arrowhead newArrowhead)
-//    {
-//        _arrowhead = newArrowhead;
-//    }
+    default:
+        myArrow = Arrow.CreateBeginnerArrow();
+        break;
+}
 
-//    public void SetLength(int newLength)
-//    {
-//        _length = newLength;
-//    }
+Console.WriteLine($"Final arrow cost: {myArrow?.GetCost()}\n");
 
-//    public void SetFletching(Fletching newFletching)
-//    {
-//        _fletching = newFletching;
-//    }
+Arrow standardArrow = new();
+Console.WriteLine("Standard arrow cost: " + standardArrow.GetCost());
+standardArrow._fletching = Fletching.gooseFeathers; // test setter function
+Console.WriteLine("Standard arrow (goose feathers) cost: " + standardArrow.GetCost());
 
-//    // getters
-//    public Arrowhead GetArrowhead()
-//    {
-//        return _arrowhead;
-//    }
+int AskForNumberInRange(string text, int min, int max)
+{
+    Console.Write(text);
+    int num = Convert.ToInt32(Console.ReadLine());
+    while (num <= min || num >= max)
+    {
+        Console.WriteLine($"Let's try again. Input a number between {min} and {max}.");
+        num = Convert.ToInt32(Console.ReadLine());
+    }
+    return num;
+}
 
-//    public int GetLength()
-//    {
-//        return _length;
-//    }
+class Arrow
+{
+    public Arrowhead _arrowhead { get; set; }
+    public float _length { get; init; }
+    public Fletching _fletching { get; set; }
 
-//    public Fletching GetFletching()
-//    {
-//        return _fletching;
-//    }
+    // constructors
+    public Arrow()
+    {
+        _arrowhead = Arrowhead.wood;
+        _length = 75f;
+        _fletching = Fletching.gooseFeathers;
+    }
 
-//    public float GetCost()
-//    {
-//        float arrowheadCost = 0;
-//        float lengthCost = (float)0.05 * _length; // Length cost is calculated right away, since it's straight forward
-//        float fletchingCost = 0;
+    public Arrow(Arrowhead arrowhead, float length, Fletching fletching)
+    {
+        _arrowhead = arrowhead;
+        _length = length;
+        _fletching = fletching;
+    }
 
-//        Console.WriteLine(_arrowhead + " " + _length + " " + _fletching);
+    // methods
 
-//        // Calculate cost of arrowhead
-//        if (_arrowhead == Arrowhead.steel)
-//        {
-//            arrowheadCost = 10;
-//        }
-//        else if (_arrowhead == Arrowhead.wood)
-//        {
-//            arrowheadCost = 3;
-//        }
-//        else if (_arrowhead == Arrowhead.obsidian)
-//        {
-//            arrowheadCost = 5;
-//        }
+    // static methods for arrow presets
+    public static Arrow CreateEliteArrow() => new(Arrowhead.steel, 95f, Fletching.plastic);
+    public static Arrow CreateBeginnerArrow() => new(Arrowhead.wood, 75f, Fletching.gooseFeathers);
+    public static Arrow CreateMarksmanArrow() => new(Arrowhead.steel, 65f, Fletching.gooseFeathers);
 
-//        // Calculate cost of fletching
-//        if (_fletching == Fletching.plastic)
-//        {
-//            fletchingCost = 10;
-//        }
-//        else if (_fletching == Fletching.turkeyFeathers)
-//        {
-//            fletchingCost = 5;
-//        }
-//        else if (_fletching == Fletching.gooseFeathers)
-//        {
-//            fletchingCost = 3;
-//        }
+    public float GetCost()
+    {
+        float arrowheadCost = 0;
+        float lengthCost = (float)0.05 * _length; // Length cost is calculated right away, since it's straight forward
+        float fletchingCost = 0;
 
-//        return arrowheadCost + lengthCost + fletchingCost;
-//    }
+        Console.WriteLine(_arrowhead + " " + _length + " " + _fletching);
 
-//    // constructors
+        // Calculate cost of arrowhead
+        if (_arrowhead == Arrowhead.steel)
+        {
+            arrowheadCost = 10;
+        }
+        else if (_arrowhead == Arrowhead.wood)
+        {
+            arrowheadCost = 3;
+        }
+        else if (_arrowhead == Arrowhead.obsidian)
+        {
+            arrowheadCost = 5;
+        }
 
-//    public Arrow()
-//    {
-//        _arrowhead = Arrowhead.wood;
-//        _length = 75;
-//        _fletching = Fletching.plastic;
-//    }
+        // Calculate cost of fletching
+        if (_fletching == Fletching.plastic)
+        {
+            fletchingCost = 10;
+        }
+        else if (_fletching == Fletching.turkeyFeathers)
+        {
+            fletchingCost = 5;
+        }
+        else if (_fletching == Fletching.gooseFeathers)
+        {
+            fletchingCost = 3;
+        }
 
-//    public Arrow(Arrowhead arrowhead, int length, Fletching fletching)
-//    {
-//        _arrowhead = arrowhead;
-//        _length = length;
-//        _fletching = fletching;
-//    }
-//}
+        return arrowheadCost + lengthCost + fletchingCost;
+    }
+}
 
-//enum Arrowhead { steel, wood, obsidian }
-//enum Fletching { plastic, turkeyFeathers, gooseFeathers }
+enum Arrowhead { steel, wood, obsidian }
+enum Fletching { plastic, turkeyFeathers, gooseFeathers }
 
 // -- Tuples --
 //(SoupType type, Ingredient ingredient, Seasoning seasoning) soup = (SoupType.soup, Ingredient.potatoes, Seasoning.salty);
