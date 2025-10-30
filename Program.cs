@@ -1,169 +1,449 @@
 ﻿
+// --The Catacombs of the Class--
+
+// The Locked Door
+
+short passcode = 1234;
+Door door = new(State.Closed, passcode); // The worst possible password?
+
+Console.WriteLine($"The Locked Door. Default password: {passcode}.\n");
+while (true)
+{
+    Console.WriteLine($"The door is currently: {door.State}.\nWhat do you want to do with the door?\n1. Open\n2. Close\n3. Lock\n4. Unlock\n5. Set new passcode.");
+    ManageDoor();
+}
+
+void ManageDoor()
+{
+    int choice = Convert.ToByte(Console.ReadLine());
+
+    switch (choice)
+    {
+        case 1:
+            {
+                door.Open();
+                break;
+            }
+        case 2:
+            {
+                door.Close();
+                break;
+            }
+        case 3:
+            {
+                door.Lock();
+                break;
+            }
+        case 4:
+            {
+                door.Unlock();
+                break;
+            }
+        case 5:
+            {
+                Console.Write("Input passcode: ");
+                short currentPasscode = Convert.ToInt16(Console.ReadLine());
+                door.SetPasscode(currentPasscode);
+                break;
+            }
+        default:
+            {
+                door.Open();
+                break;
+            }
+    }
+    Console.WriteLine(); // Add a space between each interaction
+}
+
+public class Door
+{
+    public State State { get; private set; }
+    private short Passcode;
+
+    public Door (State state, short passcode)
+    {
+        State = state;
+        Passcode = passcode;
+    }
+
+    public void SetPasscode(short currentCode)
+    {
+        if (Passcode == currentCode)
+        {
+            Console.Write("Input new passcode: ");      // User is only prompted to set a new password if they input the correct passcode
+            short newPasscode = Convert.ToInt16(Console.ReadLine()); 
+            Passcode = newPasscode;
+        }
+        else
+        {
+            Console.WriteLine("Wrong passcode! Passcode will not be updated.");
+        }
+    }
+
+    public void Open()
+    {
+        switch (State) {
+            case State.Open:
+                Console.WriteLine("The door is already open.");
+                break;
+            case State.Locked:
+                Console.WriteLine("The door is locked and cannot be opened.");
+                break;
+            case State.Closed:
+                State = State.Open;
+                Console.WriteLine("The door has been opened.");
+                break;
+        }
+    }
+
+    public void Close()
+    {
+        switch (State)
+        {
+            case State.Closed:
+                Console.WriteLine("The door is already closed!");
+                break;
+            case State.Locked:
+                State = State.Open;
+                Console.WriteLine("The door is locked, and already closed.");
+                break;
+            case State.Open:
+                State = State.Closed;
+                Console.WriteLine("The door has been closed.");
+                break;
+
+        }
+    }
+
+    public void Lock()
+    {
+        if (State == State.Closed)
+        {
+            Console.WriteLine("The door is locked.");
+            State = State.Locked;
+        }
+        else
+        {
+            Console.WriteLine($"The door is {State} and cannot be locked.");
+        }
+    }
+
+    public void Unlock()
+    {
+        if (State != State.Locked)
+        {
+            Console.WriteLine("The door is not currently locked!");
+            return;
+        }
+
+        Console.Write("Input passcode: ");
+        short passcode = Convert.ToInt16(Console.ReadLine());
+        if (Passcode == passcode)
+        {
+            State = State.Closed;
+            Console.WriteLine("Door unlocked.");
+        }
+        else
+        {
+            Console.WriteLine("Incorrect passcode.");
+        }
+    }
+}
+
+public enum State { Open, Closed, Locked }
+
+
+
+// The Card
+
+//Color[] colors = { Color.Red, Color.Green, Color.Blue, Color.Yellow };
+//Rank[] ranks = { Rank.One, Rank.Two, Rank.Three, Rank.Four, Rank.Five, Rank.Six, Rank.Seven, Rank.Eight, Rank.Nine, Rank.Ten, Rank.DollarSign, Rank.Percent, Rank.Caret, Rank.Ampersand };
+
+//Card card = new(Color.Red, Rank.One);
+//Console.WriteLine(card.IsNumberCard());
+//Console.WriteLine();
+
+//CreateDeck();
+
+//void CreateDeck()
+//{
+//    foreach (Color color in colors) 
+//    {
+//        foreach (Rank rank in ranks)
+//        {
+//            Card card = new Card(color, rank);
+//            Console.WriteLine($"The {color} {rank}");
+//        }
+//        Console.WriteLine();
+//    }
+//}
+
+//public class Card
+//{
+//    public Color Color { get; };
+//    public Rank Rank { get; };
+
+//    public Card(Color color, Rank rank)
+//    {
+//        Color = color;
+//        Rank = rank;
+//    }
+
+//    public bool IsNumberCard()
+//    {
+//        return Rank switch
+//        {
+//            Rank.DollarSign => false,
+//            Rank.Percent => false,
+//            Rank.Caret => false,
+//            Rank.Ampersand => false,
+//            _ => true,
+//        };
+//    }
+
+//    public bool IsSymbolCard()
+//    {
+//        return !IsNumberCard();
+//    }
+//}
+
+//public enum Color { Red, Green, Blue, Yellow}
+//public enum Rank { One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, DollarSign, Percent, Caret, Ampersand }
+
+
+// The Color
+//Color customColor = new();
+//Color commonColor = Color.Red;
+
+//Console.WriteLine($"Fixed Color: R({customColor.R}) G({customColor.G}) B({customColor.B})");
+//Console.WriteLine($"Common Color: R({commonColor.R}) G({commonColor.G}) B({commonColor.B})");
+
+
+//public class Color
+//{
+//    public int R { get; init; }
+//    public int G { get; init; }
+//    public int B { get; init; }
+
+//    // Black by default
+//    public Color()
+//    {
+//        R = 0;
+//        G = 0;
+//        B = 0;
+//    }
+
+//    public Color(int r, int g, int b)
+//    {
+//        R = r;
+//        G = g;
+//        B = b;
+//    }
+
+//    // Static methods for retreiving colors
+//    public static Color White { get; } = new Color(255, 255, 255);
+//    public static Color Black { get; } = new Color(0, 0, 0);
+//    public static Color Red { get; } = new Color(255, 0, 0);
+//    public static Color Orange { get; } = new Color(255, 165, 0);
+//    public static Color Yellow { get; } = new Color(255, 255, 0);
+//    public static Color Green { get; } = new Color(0, 128, 0);
+//    public static Color Blue { get; } = new Color(0, 0, 255);
+//    public static Color Purple { get; } = new Color(128, 0, 128);
+//}
+
+// The point
+//Point point1 = new(2, 3);
+//Point point2 = new(-4, 0);
+//Console.WriteLine(point1.GetPoint());
+//Console.WriteLine(point2.GetPoint());
+
+//public class Point
+//{
+//    public float X { get; init; }
+//    public float Y { get; init; }
+
+//    public Point()
+//    {
+//        X = 0;
+//        Y = 0;
+//    }
+
+//    public Point(float x, float y)
+//    {
+//        X = x;
+//        Y = y;
+//    }
+
+//    public string GetPoint()
+//    {
+//        return $"({X},{Y})";
+//    }
+//}
 
 
 // -- CLASSES --
 
 // Vin Fletcher's Arrows
-Arrow myArrow = null;
-Arrowhead arrowhead = Arrowhead.steel;
-float desiredLength;
-Fletching fletching = Fletching.gooseFeathers;
+//Arrow myArrow = null;
+//Arrowhead arrowhead = Arrowhead.steel;
+//float desiredLength;
+//Fletching fletching = Fletching.gooseFeathers;
 
-// Let user choose an arrow type. 3 Presets, 1 custom
+//// Let user choose an arrow type. 3 Presets, 1 custom
 
-Console.WriteLine("Which arrow type are you looking to purchase? (1-4):\n1. Elite Arrow\n2. Beginner Arrow\n3. Marksman Arrow\n4. Custom");
-int desiredArrow = Convert.ToInt32(Console.ReadLine());
-Console.Clear();
-switch (desiredArrow)
-{
-    case 1:
-        myArrow = Arrow.CreateEliteArrow();
-        break;
-    case 2:
-        myArrow = Arrow.CreateBeginnerArrow();
-        break;
-    case 3:
-        myArrow = Arrow.CreateMarksmanArrow();
-        break;
+//Console.WriteLine("Which arrow type are you looking to purchase? (1-4):\n1. Elite Arrow\n2. Beginner Arrow\n3. Marksman Arrow\n4. Custom");
+//int desiredArrow = Convert.ToInt32(Console.ReadLine());
+//Console.Clear();
+//switch (desiredArrow)
+//{
+//    case 1:
+//        myArrow = Arrow.CreateEliteArrow();
+//        break;
+//    case 2:
+//        myArrow = Arrow.CreateBeginnerArrow();
+//        break;
+//    case 3:
+//        myArrow = Arrow.CreateMarksmanArrow();
+//        break;
 
-    // Custom arrow functionality
-    case 4:
-        Console.WriteLine("Choose arrowhhead type (1-3):\n1. Steel\n2. Wood\n3. Obsidian");
-        int desiredArrowhead = Convert.ToInt32(Console.ReadLine());
-        desiredLength = AskForNumberInRange("\nChoose desired length in cm: (60-100) ", 60, 100);
-        Console.WriteLine("\nChoose fletching type (1-3):\n1. Plastic\n2. Turkey Feathers\n3. Goose Feathers");
-        int desiredFletching = Convert.ToInt32(Console.ReadLine());
+//    // Custom arrow functionality
+//    case 4:
+//        Console.WriteLine("Choose arrowhhead type (1-3):\n1. Steel\n2. Wood\n3. Obsidian");
+//        int desiredArrowhead = Convert.ToInt32(Console.ReadLine());
+//        desiredLength = AskForNumberInRange("\nChoose desired length in cm: (60-100) ", 60, 100);
+//        Console.WriteLine("\nChoose fletching type (1-3):\n1. Plastic\n2. Turkey Feathers\n3. Goose Feathers");
+//        int desiredFletching = Convert.ToInt32(Console.ReadLine());
 
-        // Convert user selection to enums
-        switch (desiredArrowhead)
-        {
-            case 1:
-                arrowhead = Arrowhead.steel;
-                break;
-            case 2:
-                arrowhead = Arrowhead.wood;
-                break;
-            case 3:
-                arrowhead = Arrowhead.obsidian;
-                break;
-            default:
-                arrowhead = Arrowhead.wood;
-                break;
-        }
+//        // Convert user selection to enums
+//        switch (desiredArrowhead)
+//        {
+//            case 1:
+//                arrowhead = Arrowhead.steel;
+//                break;
+//            case 2:
+//                arrowhead = Arrowhead.wood;
+//                break;
+//            case 3:
+//                arrowhead = Arrowhead.obsidian;
+//                break;
+//            default:
+//                arrowhead = Arrowhead.wood;
+//                break;
+//        }
 
-        switch (desiredFletching)
-        {
-            case 1:
-                fletching = Fletching.plastic;
-                break;
-            case 2:
-                fletching = Fletching.turkeyFeathers;
-                break;
-            case 3:
-                fletching = Fletching.gooseFeathers;
-                break;
-            default:
-                fletching = Fletching.gooseFeathers;
-                break;
-        }
+//        switch (desiredFletching)
+//        {
+//            case 1:
+//                fletching = Fletching.plastic;
+//                break;
+//            case 2:
+//                fletching = Fletching.turkeyFeathers;
+//                break;
+//            case 3:
+//                fletching = Fletching.gooseFeathers;
+//                break;
+//            default:
+//                fletching = Fletching.gooseFeathers;
+//                break;
+//        }
 
-        myArrow = new(arrowhead, desiredLength, fletching);   
-        break;
+//        myArrow = new(arrowhead, desiredLength, fletching);   
+//        break;
 
-    default:
-        myArrow = Arrow.CreateBeginnerArrow();
-        break;
-}
+//    default:
+//        myArrow = Arrow.CreateBeginnerArrow();
+//        break;
+//}
 
-Console.WriteLine($"Final arrow cost: {myArrow?.GetCost()}\n");
+//Console.WriteLine($"Final arrow cost: {myArrow?.GetCost()}\n");
 
-Arrow standardArrow = new();
-Console.WriteLine("Standard arrow cost: " + standardArrow.GetCost());
-standardArrow._fletching = Fletching.gooseFeathers; // test setter function
-Console.WriteLine("Standard arrow (goose feathers) cost: " + standardArrow.GetCost());
+//Arrow standardArrow = new();
+//Console.WriteLine("Standard arrow cost: " + standardArrow.GetCost());
+//standardArrow._fletching = Fletching.gooseFeathers; // test setter function
+//Console.WriteLine("Standard arrow (goose feathers) cost: " + standardArrow.GetCost());
 
-int AskForNumberInRange(string text, int min, int max)
-{
-    Console.Write(text);
-    int num = Convert.ToInt32(Console.ReadLine());
-    while (num <= min || num >= max)
-    {
-        Console.WriteLine($"Let's try again. Input a number between {min} and {max}.");
-        num = Convert.ToInt32(Console.ReadLine());
-    }
-    return num;
-}
+//int AskForNumberInRange(string text, int min, int max)
+//{
+//    Console.Write(text);
+//    int num = Convert.ToInt32(Console.ReadLine());
+//    while (num <= min || num >= max)
+//    {
+//        Console.WriteLine($"Let's try again. Input a number between {min} and {max}.");
+//        num = Convert.ToInt32(Console.ReadLine());
+//    }
+//    return num;
+//}
 
-class Arrow
-{
-    public Arrowhead _arrowhead { get; set; }
-    public float _length { get; init; }
-    public Fletching _fletching { get; set; }
+//class Arrow
+//{
+//    public Arrowhead _arrowhead { get; set; }
+//    public float _length { get; init; }
+//    public Fletching _fletching { get; set; }
 
-    // constructors
-    public Arrow()
-    {
-        _arrowhead = Arrowhead.wood;
-        _length = 75f;
-        _fletching = Fletching.gooseFeathers;
-    }
+//    // constructors
+//    public Arrow()
+//    {
+//        _arrowhead = Arrowhead.wood;
+//        _length = 75f;
+//        _fletching = Fletching.gooseFeathers;
+//    }
 
-    public Arrow(Arrowhead arrowhead, float length, Fletching fletching)
-    {
-        _arrowhead = arrowhead;
-        _length = length;
-        _fletching = fletching;
-    }
+//    public Arrow(Arrowhead arrowhead, float length, Fletching fletching)
+//    {
+//        _arrowhead = arrowhead;
+//        _length = length;
+//        _fletching = fletching;
+//    }
 
-    // methods
+//    // methods
 
-    // static methods for arrow presets
-    public static Arrow CreateEliteArrow() => new(Arrowhead.steel, 95f, Fletching.plastic);
-    public static Arrow CreateBeginnerArrow() => new(Arrowhead.wood, 75f, Fletching.gooseFeathers);
-    public static Arrow CreateMarksmanArrow() => new(Arrowhead.steel, 65f, Fletching.gooseFeathers);
+//    // static methods for arrow presets
+//    public static Arrow CreateEliteArrow() => new(Arrowhead.steel, 95f, Fletching.plastic);
+//    public static Arrow CreateBeginnerArrow() => new(Arrowhead.wood, 75f, Fletching.gooseFeathers);
+//    public static Arrow CreateMarksmanArrow() => new(Arrowhead.steel, 65f, Fletching.gooseFeathers);
 
-    public float GetCost()
-    {
-        float arrowheadCost = 0;
-        float lengthCost = (float)0.05 * _length; // Length cost is calculated right away, since it's straight forward
-        float fletchingCost = 0;
+//    public float GetCost()
+//    {
+//        float arrowheadCost = 0;
+//        float lengthCost = (float)0.05 * _length; // Length cost is calculated right away, since it's straight forward
+//        float fletchingCost = 0;
 
-        Console.WriteLine(_arrowhead + " " + _length + " " + _fletching);
+//        Console.WriteLine(_arrowhead + " " + _length + " " + _fletching);
 
-        // Calculate cost of arrowhead
-        if (_arrowhead == Arrowhead.steel)
-        {
-            arrowheadCost = 10;
-        }
-        else if (_arrowhead == Arrowhead.wood)
-        {
-            arrowheadCost = 3;
-        }
-        else if (_arrowhead == Arrowhead.obsidian)
-        {
-            arrowheadCost = 5;
-        }
+//        // Calculate cost of arrowhead
+//        if (_arrowhead == Arrowhead.steel)
+//        {
+//            arrowheadCost = 10;
+//        }
+//        else if (_arrowhead == Arrowhead.wood)
+//        {
+//            arrowheadCost = 3;
+//        }
+//        else if (_arrowhead == Arrowhead.obsidian)
+//        {
+//            arrowheadCost = 5;
+//        }
 
-        // Calculate cost of fletching
-        if (_fletching == Fletching.plastic)
-        {
-            fletchingCost = 10;
-        }
-        else if (_fletching == Fletching.turkeyFeathers)
-        {
-            fletchingCost = 5;
-        }
-        else if (_fletching == Fletching.gooseFeathers)
-        {
-            fletchingCost = 3;
-        }
+//        // Calculate cost of fletching
+//        if (_fletching == Fletching.plastic)
+//        {
+//            fletchingCost = 10;
+//        }
+//        else if (_fletching == Fletching.turkeyFeathers)
+//        {
+//            fletchingCost = 5;
+//        }
+//        else if (_fletching == Fletching.gooseFeathers)
+//        {
+//            fletchingCost = 3;
+//        }
 
-        return arrowheadCost + lengthCost + fletchingCost;
-    }
-}
+//        return arrowheadCost + lengthCost + fletchingCost;
+//    }
+//}
 
-enum Arrowhead { steel, wood, obsidian }
-enum Fletching { plastic, turkeyFeathers, gooseFeathers }
+//enum Arrowhead { steel, wood, obsidian }
+//enum Fletching { plastic, turkeyFeathers, gooseFeathers }
 
 // -- Tuples --
 //(SoupType type, Ingredient ingredient, Seasoning seasoning) soup = (SoupType.soup, Ingredient.potatoes, Seasoning.salty);
