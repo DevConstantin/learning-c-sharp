@@ -1,157 +1,209 @@
 ﻿
 // --The Catacombs of the Class--
 
-// The Locked Door
+// Rock, Paper, Scissors game
 
-short passcode = 1234;
-Door door = new(State.Closed, passcode); // The worst possible password?
-
-Console.WriteLine($"The Locked Door. Default password: {passcode}.\n");
+Console.WriteLine("Rock, Paper, Scissors!");
 while (true)
 {
-    Console.WriteLine($"The door is currently: {door.State}.\nWhat do you want to do with the door?\n1. Open\n2. Close\n3. Lock\n4. Unlock\n5. Set new passcode.");
-    ManageDoor();
+    GameItem player1Item = GetPlayerChoice(1);
+    GameItem player2Item = GetPlayerChoice(2);
+    ShowWinner(player1Item, player2Item);
+    Console.WriteLine();
 }
 
-void ManageDoor()
+
+GameItem GetPlayerChoice(byte playerNum)
 {
-    int choice = Convert.ToByte(Console.ReadLine());
-
-    switch (choice)
+    Console.Write($"Player {playerNum} choose item (rock / paper / scissors) ");
+    return Console.ReadLine() switch
     {
-        case 1:
-            {
-                door.Open();
-                break;
-            }
-        case 2:
-            {
-                door.Close();
-                break;
-            }
-        case 3:
-            {
-                door.Lock();
-                break;
-            }
-        case 4:
-            {
-                door.Unlock();
-                break;
-            }
-        case 5:
-            {
-                Console.Write("Input passcode: ");
-                short currentPasscode = Convert.ToInt16(Console.ReadLine());
-                door.SetPasscode(currentPasscode);
-                break;
-            }
-        default:
-            {
-                door.Open();
-                break;
-            }
-    }
-    Console.WriteLine(); // Add a space between each interaction
+        "rock" => new GameItem(Item.Rock),
+        "paper" => new GameItem(Item.Paper),
+        "scissors" => new GameItem(Item.Scissors),
+        _ => new GameItem(Item.Rock),
+    };
 }
 
-public class Door
+void ShowWinner(GameItem item1, GameItem item2)
 {
-    public State State { get; private set; }
-    private short Passcode;
-
-    public Door (State state, short passcode)
+    if (item1.Item == item2.Item)
     {
-        State = state;
-        Passcode = passcode;
+        Console.WriteLine("It's a draw.");
     }
-
-    public void SetPasscode(short currentCode)
+    else if (item1.CanBeat == item2.Item) 
     {
-        if (Passcode == currentCode)
-        {
-            Console.Write("Input new passcode: ");      // User is only prompted to set a new password if they input the correct passcode
-            short newPasscode = Convert.ToInt16(Console.ReadLine()); 
-            Passcode = newPasscode;
-        }
-        else
-        {
-            Console.WriteLine("Wrong passcode! Passcode will not be updated.");
-        }
+        Console.WriteLine("Player 1 has won.");
     }
-
-    public void Open()
+    else
     {
-        switch (State) {
-            case State.Open:
-                Console.WriteLine("The door is already open.");
-                break;
-            case State.Locked:
-                Console.WriteLine("The door is locked and cannot be opened.");
-                break;
-            case State.Closed:
-                State = State.Open;
-                Console.WriteLine("The door has been opened.");
-                break;
-        }
-    }
-
-    public void Close()
-    {
-        switch (State)
-        {
-            case State.Closed:
-                Console.WriteLine("The door is already closed!");
-                break;
-            case State.Locked:
-                State = State.Open;
-                Console.WriteLine("The door is locked, and already closed.");
-                break;
-            case State.Open:
-                State = State.Closed;
-                Console.WriteLine("The door has been closed.");
-                break;
-
-        }
-    }
-
-    public void Lock()
-    {
-        if (State == State.Closed)
-        {
-            Console.WriteLine("The door is locked.");
-            State = State.Locked;
-        }
-        else
-        {
-            Console.WriteLine($"The door is {State} and cannot be locked.");
-        }
-    }
-
-    public void Unlock()
-    {
-        if (State != State.Locked)
-        {
-            Console.WriteLine("The door is not currently locked!");
-            return;
-        }
-
-        Console.Write("Input passcode: ");
-        short passcode = Convert.ToInt16(Console.ReadLine());
-        if (Passcode == passcode)
-        {
-            State = State.Closed;
-            Console.WriteLine("Door unlocked.");
-        }
-        else
-        {
-            Console.WriteLine("Incorrect passcode.");
-        }
+        Console.WriteLine("Player 2 has won.");
     }
 }
 
-public enum State { Open, Closed, Locked }
+public class GameItem
+{
+    public Item Item { get; private set; }
 
+    public GameItem(Item item)
+    {
+        Item = item;
+    }
+
+    public Item CanBeat => Item == Item.Scissors ? Item.Paper : Item == Item.Rock ? Item.Scissors : Item.Rock;
+}
+
+public enum Item { Rock, Paper, Scissors }
+
+// The Locked Door
+
+//short passcode = 1234;
+//Door door = new(State.Closed, passcode); // The worst possible password?
+
+//Console.WriteLine($"The Locked Door. Default password: {passcode}.\n");
+//while (true)
+//{
+//    Console.WriteLine($"The door is currently: {door.State}.\nWhat do you want to do with the door?\n1. Open\n2. Close\n3. Lock\n4. Unlock\n5. Set new passcode.");
+//    ManageDoor();
+//}
+
+//void ManageDoor()
+//{
+//    int choice = Convert.ToByte(Console.ReadLine());
+
+//    switch (choice)
+//    {
+//        case 1:
+//            {
+//                door.Open();
+//                break;
+//            }
+//        case 2:
+//            {
+//                door.Close();
+//                break;
+//            }
+//        case 3:
+//            {
+//                door.Lock();
+//                break;
+//            }
+//        case 4:
+//            {
+//                door.Unlock();
+//                break;
+//            }
+//        case 5:
+//            {
+//                Console.Write("Input passcode: ");
+//                short currentPasscode = Convert.ToInt16(Console.ReadLine());
+//                door.SetPasscode(currentPasscode);
+//                break;
+//            }
+//        default:
+//            {
+//                door.Open();
+//                break;
+//            }
+//    }
+//    Console.WriteLine(); // Add a space between each interaction
+//}
+
+//public class Door
+//{
+//    public State State { get; private set; }
+//    private short Passcode;
+
+//    public Door (State state, short passcode)
+//    {
+//        State = state;
+//        Passcode = passcode;
+//    }
+
+//    public void SetPasscode(short currentCode)
+//    {
+//        if (Passcode == currentCode)
+//        {
+//            Console.Write("Input new passcode: ");      // User is only prompted to set a new password if they input the correct passcode
+//            short newPasscode = Convert.ToInt16(Console.ReadLine()); 
+//            Passcode = newPasscode;
+//        }
+//        else
+//        {
+//            Console.WriteLine("Wrong passcode! Passcode will not be updated.");
+//        }
+//    }
+
+//    public void Open()
+//    {
+//        switch (State) {
+//            case State.Open:
+//                Console.WriteLine("The door is already open.");
+//                break;
+//            case State.Locked:
+//                Console.WriteLine("The door is locked and cannot be opened.");
+//                break;
+//            case State.Closed:
+//                State = State.Open;
+//                Console.WriteLine("The door has been opened.");
+//                break;
+//        }
+//    }
+
+//    public void Close()
+//    {
+//        switch (State)
+//        {
+//            case State.Closed:
+//                Console.WriteLine("The door is already closed!");
+//                break;
+//            case State.Locked:
+//                Console.WriteLine("The door is locked, and already closed.");
+//                break;
+//            case State.Open:
+//                State = State.Closed;
+//                Console.WriteLine("The door has been closed.");
+//                break;
+
+//        }
+//    }
+
+//    public void Lock()
+//    {
+//        if (State == State.Closed)
+//        {
+//            Console.WriteLine("The door is locked.");
+//            State = State.Locked;
+//        }
+//        else
+//        {
+//            Console.WriteLine($"The door is {State} and cannot be locked.");
+//        }
+//    }
+
+//    public void Unlock()
+//    {
+//        if (State != State.Locked)
+//        {
+//            Console.WriteLine("The door is not currently locked!");
+//            return;
+//        }
+
+//        Console.Write("Input passcode: ");
+//        short passcode = Convert.ToInt16(Console.ReadLine());
+//        if (Passcode == passcode)
+//        {
+//            State = State.Closed;
+//            Console.WriteLine("Door unlocked.");
+//        }
+//        else
+//        {
+//            Console.WriteLine("Incorrect passcode.");
+//        }
+//    }
+//}
+
+//public enum State { Open, Closed, Locked }
 
 
 // The Card
