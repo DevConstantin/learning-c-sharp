@@ -1,59 +1,137 @@
 ﻿
 // --The Catacombs of the Class--
 
-// Rock, Paper, Scissors game
+// The Password Validator
 
-Console.WriteLine("Rock, Paper, Scissors!");
 while (true)
 {
-    GameItem player1Item = GetPlayerChoice(1);
-    GameItem player2Item = GetPlayerChoice(2);
-    ShowWinner(player1Item, player2Item);
-    Console.WriteLine();
+    string password = RequestPassword();
+    PasswordValidator Validator = new(password);
+    Console.WriteLine(Validator.ValidPassword() ? "Valid\n" : "Invalid\n");
 }
 
-
-GameItem GetPlayerChoice(byte playerNum)
+string RequestPassword()
 {
-    Console.Write($"Player {playerNum} choose item (rock / paper / scissors) ");
-    return Console.ReadLine() switch
-    {
-        "rock" => new GameItem(Item.Rock),
-        "paper" => new GameItem(Item.Paper),
-        "scissors" => new GameItem(Item.Scissors),
-        _ => new GameItem(Item.Rock),
-    };
+    Console.Write("Input password: ");
+    string password = Console.ReadLine();
+    return password;
 }
 
-void ShowWinner(GameItem item1, GameItem item2)
+public class PasswordValidator
 {
-    if (item1.Item == item2.Item)
+    public string Password { get; }
+    public byte LENGTH_MIN { get; } = 6;
+    public byte LENGTH_MAX { get; } = 13;
+
+    public PasswordValidator(string password)
     {
-        Console.WriteLine("It's a draw.");
+        Password = password;
     }
-    else if (item1.CanBeat == item2.Item) 
+
+    public bool ValidPassword() => ValidLength() & HasUppercase() & HasLowercase() & HasNumber() & !InvalidChars();
+
+    public bool ValidLength()
     {
-        Console.WriteLine("Player 1 has won.");
+        byte length = 0;
+        foreach (char letter in Password)
+        {
+            length += 1;
+        }
+        return (length >= LENGTH_MIN && length <= LENGTH_MAX);
     }
-    else
+
+    public bool HasUppercase()
     {
-        Console.WriteLine("Player 2 has won.");
+        foreach (char letter in Password)
+        {
+            if (char.IsUpper(letter)) return true;
+        }
+        return false;
+    }
+
+    public bool HasLowercase()
+    {
+        foreach (char letter in Password)
+        {
+            if (char.IsLower(letter)) return true;
+        }
+        return false;
+    }
+
+    public bool HasNumber()
+    {
+        foreach (char letter in Password)
+        {
+            if (char.IsDigit(letter)) return true;
+        }
+        return false;
+    }
+
+    public bool InvalidChars()
+    {
+        foreach (char letter in Password)
+        {
+            if (letter == 'T' | letter == '&') return true;
+        }
+        return false;
     }
 }
 
-public class GameItem
-{
-    public Item Item { get; private set; }
 
-    public GameItem(Item item)
-    {
-        Item = item;
-    }
 
-    public Item CanBeat => Item == Item.Scissors ? Item.Paper : Item == Item.Rock ? Item.Scissors : Item.Rock;
-}
+// Rock, Paper, Scissors game
 
-public enum Item { Rock, Paper, Scissors }
+//Console.WriteLine("Rock, Paper, Scissors!");
+//while (true)
+//{
+//    GameItem player1Item = GetPlayerChoice(1);
+//    GameItem player2Item = GetPlayerChoice(2);
+//    ShowWinner(player1Item, player2Item);
+//    Console.WriteLine();
+//}
+
+
+//GameItem GetPlayerChoice(byte playerNum)
+//{
+//    Console.Write($"Player {playerNum} choose item (rock / paper / scissors) ");
+//    return Console.ReadLine() switch
+//    {
+//        "rock" => new GameItem(Item.Rock),
+//        "paper" => new GameItem(Item.Paper),
+//        "scissors" => new GameItem(Item.Scissors),
+//        _ => new GameItem(Item.Rock),
+//    };
+//}
+
+//void ShowWinner(GameItem item1, GameItem item2)
+//{
+//    if (item1.Item == item2.Item)
+//    {
+//        Console.WriteLine("It's a draw.");
+//    }
+//    else if (item1.CanBeat == item2.Item) 
+//    {
+//        Console.WriteLine("Player 1 has won.");
+//    }
+//    else
+//    {
+//        Console.WriteLine("Player 2 has won.");
+//    }
+//}
+
+//public class GameItem
+//{
+//    public Item Item { get; private set; }
+
+//    public GameItem(Item item)
+//    {
+//        Item = item;
+//    }
+
+//    public Item CanBeat => Item == Item.Scissors ? Item.Paper : Item == Item.Rock ? Item.Scissors : Item.Rock;
+//}
+
+//public enum Item { Rock, Paper, Scissors }
 
 // The Locked Door
 
