@@ -1,82 +1,225 @@
 ﻿
+
+// Inheritance
+
+Pack pack = new(4, 7, 6);
+
+while (true)
+{
+    PackRender.ListInfo(pack);
+    PackRender.ListItems(pack);
+    Console.WriteLine();
+    Console.WriteLine($"Choose an item to add to your pack: \n1. Arrow\n2. Bow\n3. Rope\n4. Water\n5. Food\n6. Sword");
+
+    ConsoleKey key = GetKey();
+    InventoryItem item = key switch
+    {
+        ConsoleKey.D1 => new Arrow(),
+        ConsoleKey.D2 => new Bow(),
+        ConsoleKey.D3 => new Rope(),
+        ConsoleKey.D4 => new Water(),
+        ConsoleKey.D5 => new Food(),
+        ConsoleKey.D6 => new Sword(),
+    };
+
+    bool success = pack.Add(item);
+    if (!success)
+    {
+        Console.Clear();
+        Console.Beep();
+        Console.WriteLine($"\nFailed to add {item}!");
+    }
+
+    Console.WriteLine("\n");
+}
+
+ConsoleKey GetKey()
+{
+    while (true)
+    {
+        ConsoleKey key = Console.ReadKey().Key;
+        if (key == ConsoleKey.D1 || key == ConsoleKey.D2 || key == ConsoleKey.D3 || key == ConsoleKey.D4 || key == ConsoleKey.D5 || key == ConsoleKey.D6) return key;
+    }
+}
+
+public static class PackRender
+{
+    public static void ListInfo(Pack pack)
+    {
+        Console.WriteLine("Pack Info");
+        Console.WriteLine($"Item count: {pack.ItemCount}/{pack.MaxItems}   Weight: {pack.Weight}/{pack.MaxWeight}   Volume: {pack.Volume}/{pack.MaxVolume}");
+    }
+
+    public static void ListItems(Pack pack)
+    {
+        if (pack.ItemCount <= 0) return;         
+        int position = 1;
+        foreach (InventoryItem inventoryItem in pack.InventoryItems)          
+        {
+            if (inventoryItem == null) continue;
+            Console.WriteLine($"{position}. {inventoryItem} Weight: {inventoryItem.Weight} Volume: {inventoryItem.Volume}");            
+            position++;       
+        }
+    }
+} 
+
+public class Pack
+{
+    public byte MaxItems { get; init; }
+    public float MaxWeight { get; init; }
+    public float MaxVolume { get; init; }
+
+    public int ItemCount { get; private set; } = 0;
+    public float Weight { get; private set; } = 0f;
+    public float Volume { get; private set; } = 0f;
+
+    public InventoryItem[] InventoryItems { get; init; }
+
+    public Pack(byte maxItems, float maxWeight, float maxVolume)
+    {
+        MaxItems = maxItems;
+        MaxWeight = maxWeight;
+        MaxVolume = maxVolume;
+        InventoryItems = new InventoryItem[maxItems];
+    }
+
+    private bool CapacityReached() => ItemCount >= MaxItems;
+    private bool ExceedsWeight(float itemWeight) => (Weight + itemWeight) > MaxWeight;
+    private bool ExceedsVolume(float itemVolume) => (Volume + itemVolume) > MaxVolume;
+
+    public bool Add(InventoryItem item)
+    {
+        if (CapacityReached() || ExceedsWeight(item.Weight) || ExceedsVolume(item.Volume)) return false;
+
+        InventoryItems[ItemCount] = item;
+        ItemCount++;
+        Weight += item.Weight;
+        Volume += item.Volume;
+
+        return true;
+    }
+}
+
+public class InventoryItem
+{
+    public float Weight { get; init; }
+    public float Volume { get; init; }
+
+    public InventoryItem(float weight, float volume)
+    {
+        Weight = weight;
+        Volume = volume;
+    }
+}
+
+public class Arrow(): InventoryItem(0.1f, 0.05f)
+{ 
+
+}
+
+public class Bow() : InventoryItem(1f, 4f)
+{
+
+}
+
+public class Rope() : InventoryItem(1f, 1.5f)
+{
+
+}
+
+public class Water() : InventoryItem(2f, 4f)
+{
+
+}
+
+public class Food() : InventoryItem(1f, 0.5f)
+{
+
+}
+
+public class Sword() : InventoryItem(5f, 3f)
+{
+
+}
+
+
 // --The Catacombs of the Class--
 
 // The Password Validator
 
-while (true)
-{
-    string password = RequestPassword();
-    PasswordValidator Validator = new(password);
-    Console.WriteLine(Validator.ValidPassword() ? "Valid\n" : "Invalid\n");
-}
+//while (true)
+//{
+//    string password = RequestPassword();
+//    PasswordValidator Validator = new(password);
+//    Console.WriteLine(Validator.ValidPassword() ? "Valid\n" : "Invalid\n");
+//}
 
-string RequestPassword()
-{
-    Console.Write("Input password: ");
-    string password = Console.ReadLine();
-    return password;
-}
+//string RequestPassword()
+//{
+//    Console.Write("Input password: ");
+//    string password = Console.ReadLine();
+//    return password;
+//}
 
-public class PasswordValidator
-{
-    public string Password { get; }
-    public byte LENGTH_MIN { get; } = 6;
-    public byte LENGTH_MAX { get; } = 13;
+//public class PasswordValidator
+//{
+//    public string Password { get; }
+//    public byte LENGTH_MIN { get; } = 6;
+//    public byte LENGTH_MAX { get; } = 13;
 
-    public PasswordValidator(string password)
-    {
-        Password = password;
-    }
+//    public PasswordValidator(string password)
+//    {
+//        Password = password;
+//    }
 
-    public bool ValidPassword() => ValidLength() & HasUppercase() & HasLowercase() & HasNumber() & !InvalidChars();
+//    public bool ValidPassword() => ValidLength() & HasUppercase() & HasLowercase() & HasNumber() & !InvalidChars();
 
-    public bool ValidLength()
-    {
-        byte length = 0;
-        foreach (char letter in Password)
-        {
-            length += 1;
-        }
-        return (length >= LENGTH_MIN && length <= LENGTH_MAX);
-    }
+//    public bool ValidLength()
+//    {
+//        byte length = 0;
+//        foreach (char letter in Password)
+//        {
+//            length += 1;
+//        }
+//        return (length >= LENGTH_MIN && length <= LENGTH_MAX);
+//    }
 
-    public bool HasUppercase()
-    {
-        foreach (char letter in Password)
-        {
-            if (char.IsUpper(letter)) return true;
-        }
-        return false;
-    }
+//    public bool HasUppercase()
+//    {
+//        foreach (char letter in Password)
+//        {
+//            if (char.IsUpper(letter)) return true;
+//        }
+//        return false;
+//    }
 
-    public bool HasLowercase()
-    {
-        foreach (char letter in Password)
-        {
-            if (char.IsLower(letter)) return true;
-        }
-        return false;
-    }
+//    public bool HasLowercase()
+//    {
+//        foreach (char letter in Password)
+//        {
+//            if (char.IsLower(letter)) return true;
+//        }
+//        return false;
+//    }
 
-    public bool HasNumber()
-    {
-        foreach (char letter in Password)
-        {
-            if (char.IsDigit(letter)) return true;
-        }
-        return false;
-    }
+//    public bool HasNumber()
+//    {
+//        foreach (char letter in Password)
+//        {
+//            if (char.IsDigit(letter)) return true;
+//        }
+//        return false;
+//    }
 
-    public bool InvalidChars()
-    {
-        foreach (char letter in Password)
-        {
-            if (letter == 'T' | letter == '&') return true;
-        }
-        return false;
-    }
-}
-
+//    public bool InvalidChars()
+//    {
+//        foreach (char letter in Password)
+//        {
+//            if (letter == 'T' | letter == '&') return true;
+//        }
+//        return false;
+//    }
+//}
 
 
 // Rock, Paper, Scissors game
