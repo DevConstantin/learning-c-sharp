@@ -1,146 +1,224 @@
-﻿
+﻿// Polymorphism
 
-// Inheritance
 
-Pack pack = new(4, 7, 6);
+// Inheritance & Polymorphism
 
-while (true)
+// -- The Old Robot --
+
+Console.WriteLine("Commands: on / off / north / south / west / east");
+Robot robot = new();
+
+for (int i = 0; i < 3; i++)
 {
-    PackRender.ListInfo(pack);
-    PackRender.ListItems(pack);
-    Console.WriteLine();
-    Console.WriteLine($"Choose an item to add to your pack: \n1. Arrow\n2. Bow\n3. Rope\n4. Water\n5. Food\n6. Sword");
-
-    ConsoleKey key = GetKey();
-    InventoryItem item = key switch
+    string choice = Console.ReadLine();
+    RobotCommand command = choice switch
     {
-        ConsoleKey.D1 => new Arrow(),
-        ConsoleKey.D2 => new Bow(),
-        ConsoleKey.D3 => new Rope(),
-        ConsoleKey.D4 => new Water(),
-        ConsoleKey.D5 => new Food(),
-        ConsoleKey.D6 => new Sword(),
+        "on" => new OnCommand(),
+        "off" => new OffComand(),
+        "north" => new NorthCommand(),
+        "south" => new SouthCommand(),
+        "west" => new WestCommand(),
+        "east" => new EastCommand(),
     };
 
-    bool success = pack.Add(item);
-    if (!success)
-    {
-        Console.Clear();
-        Console.Beep();
-        Console.WriteLine($"\nFailed to add {item}!");
-    }
-
-    Console.WriteLine("\n");
+    robot.Commands[i] = command;
 }
 
-ConsoleKey GetKey()
-{
-    while (true)
-    {
-        ConsoleKey key = Console.ReadKey().Key;
-        if (key == ConsoleKey.D1 || key == ConsoleKey.D2 || key == ConsoleKey.D3 || key == ConsoleKey.D4 || key == ConsoleKey.D5 || key == ConsoleKey.D6) return key;
-    }
-}
+Console.WriteLine();
+robot.Run();
 
-public static class PackRender
+public class Robot
 {
-    public static void ListInfo(Pack pack)
-    {
-        Console.WriteLine("Pack Info");
-        Console.WriteLine($"Item count: {pack.ItemCount}/{pack.MaxItems}   Weight: {pack.Weight}/{pack.MaxWeight}   Volume: {pack.Volume}/{pack.MaxVolume}");
-    }
+    public int X { get; set; }
+    public int Y { get; set; }
 
-    public static void ListItems(Pack pack)
+    public bool IsPowered { get; set; }
+    public RobotCommand?[] Commands { get; } = new RobotCommand?[3];
+    public void Run()
     {
-        if (pack.ItemCount <= 0) return;         
-        int position = 1;
-        foreach (InventoryItem inventoryItem in pack.InventoryItems)          
+        foreach (RobotCommand? command in Commands)
         {
-            if (inventoryItem == null) continue;
-            Console.WriteLine($"{position}. {inventoryItem} Weight: {inventoryItem.Weight} Volume: {inventoryItem.Volume}");            
-            position++;       
+            command?.Run(this);
+            Console.WriteLine($"[{X} {Y} {IsPowered}]");
         }
     }
-} 
+}
 
-public class Pack
+public class NorthCommand : RobotCommand
 {
-    public byte MaxItems { get; init; }
-    public float MaxWeight { get; init; }
-    public float MaxVolume { get; init; }
-
-    public int ItemCount { get; private set; } = 0;
-    public float Weight { get; private set; } = 0f;
-    public float Volume { get; private set; } = 0f;
-
-    public InventoryItem[] InventoryItems { get; init; }
-
-    public Pack(byte maxItems, float maxWeight, float maxVolume)
-    {
-        MaxItems = maxItems;
-        MaxWeight = maxWeight;
-        MaxVolume = maxVolume;
-        InventoryItems = new InventoryItem[maxItems];
-    }
-
-    private bool CapacityReached() => ItemCount >= MaxItems;
-    private bool ExceedsWeight(float itemWeight) => (Weight + itemWeight) > MaxWeight;
-    private bool ExceedsVolume(float itemVolume) => (Volume + itemVolume) > MaxVolume;
-
-    public bool Add(InventoryItem item)
-    {
-        if (CapacityReached() || ExceedsWeight(item.Weight) || ExceedsVolume(item.Volume)) return false;
-
-        InventoryItems[ItemCount] = item;
-        ItemCount++;
-        Weight += item.Weight;
-        Volume += item.Volume;
-
-        return true;
+    public override void Run(Robot robot) {
+        if (!robot.IsPowered) return;
+        robot.Y += 1; 
     }
 }
 
-public class InventoryItem
+public class SouthCommand : RobotCommand
 {
-    public float Weight { get; init; }
-    public float Volume { get; init; }
-
-    public InventoryItem(float weight, float volume)
-    {
-        Weight = weight;
-        Volume = volume;
+    public override void Run(Robot robot) {
+        if (!robot.IsPowered) return;
+        robot.Y -= 1; 
     }
 }
 
-public class Arrow(): InventoryItem(0.1f, 0.05f)
-{ 
-
-}
-
-public class Bow() : InventoryItem(1f, 4f)
+public class WestCommand : RobotCommand
 {
-
+    public override void Run(Robot robot) {
+        if (!robot.IsPowered) return;
+        robot.X -= 1; 
+    }
 }
 
-public class Rope() : InventoryItem(1f, 1.5f)
+public class EastCommand : RobotCommand
 {
-
+    public override void Run(Robot robot) {
+        if (!robot.IsPowered) return;
+        robot.X += 1; 
+    }
 }
 
-public class Water() : InventoryItem(2f, 4f)
-{
+public class OnCommand : RobotCommand { public override void Run(Robot robot) { robot.IsPowered = true; } }
+public class OffComand : RobotCommand { public override void Run(Robot robot) {robot.IsPowered = false; } }
+public abstract class RobotCommand { public abstract void Run(Robot robot); }
 
-}
+// -- Pack -- 
+//Arrow arrow = new();
+//Console.WriteLine("Arrow damage:" + arrow.GetDamage());
 
-public class Food() : InventoryItem(1f, 0.5f)
-{
+//Console.WriteLine(new Bow().ToString());
 
-}
+//Pack pack = new(4, 7, 6);
 
-public class Sword() : InventoryItem(5f, 3f)
-{
+//while (true)
+//{
+//    Console.WriteLine(pack.ToString());
+//    Console.WriteLine($"Choose an item to add to your pack: \n1. Arrow\n2. Bow\n3. Rope\n4. Water\n5. Food\n6. Sword");
 
-}
+//    ConsoleKey key = GetKey();
+//    InventoryItem item = key switch
+//    {
+//        ConsoleKey.D1 => new Arrow(),
+//        ConsoleKey.D2 => new Bow(),
+//        ConsoleKey.D3 => new Rope(),
+//        ConsoleKey.D4 => new Water(),
+//        ConsoleKey.D5 => new Food(),
+//        ConsoleKey.D6 => new Sword(),
+//    };
+
+//    bool success = pack.Add(item);
+//    if (!success)
+//    {
+//        Console.Clear();
+//        Console.Beep();
+//        Console.WriteLine($"\nFailed to add {item}!");
+//    }
+
+//    Console.WriteLine("\n");
+//}
+
+//ConsoleKey GetKey()
+//{
+//    while (true)
+//    {
+//        ConsoleKey key = Console.ReadKey().Key;
+//        if (key == ConsoleKey.D1 || key == ConsoleKey.D2 || key == ConsoleKey.D3 || key == ConsoleKey.D4 || key == ConsoleKey.D5 || key == ConsoleKey.D6) return key;
+//    }
+//}
+
+//public class Pack
+//{
+//    public byte MaxItems { get; init; }
+//    public float MaxWeight { get; init; }
+//    public float MaxVolume { get; init; }
+
+//    public int ItemCount { get; private set; } = 0;
+//    public float Weight { get; private set; } = 0f;
+//    public float Volume { get; private set; } = 0f;
+
+//    public InventoryItem[] InventoryItems { get; init; }
+
+//    public new string ToString()
+//    {
+//        if (InventoryItems.Length == 0) return "The pack is empty.";
+
+//        string packContents = "Pack containing ";
+//        foreach (InventoryItem inventoryItem in InventoryItems)
+//        {
+//            if (inventoryItem != null) packContents += " " + inventoryItem.ToString();
+//        }
+//        return packContents == "Pack containing " ? "The pack is empty." : packContents; // Check if the packContests string is the same, and indicate that it's empty if it is
+//    }
+
+//    public Pack(byte maxItems, float maxWeight, float maxVolume)
+//    {
+//        MaxItems = maxItems;
+//        MaxWeight = maxWeight;
+//        MaxVolume = maxVolume;
+//        InventoryItems = new InventoryItem[maxItems];
+//    }
+
+//    private bool CapacityReached() => ItemCount >= MaxItems;
+//    private bool ExceedsWeight(float itemWeight) => (Weight + itemWeight) > MaxWeight;
+//    private bool ExceedsVolume(float itemVolume) => (Volume + itemVolume) > MaxVolume;
+
+//    public bool Add(InventoryItem item)
+//    {
+//        if (CapacityReached() || ExceedsWeight(item.Weight) || ExceedsVolume(item.Volume)) return false;
+
+//        InventoryItems[ItemCount] = item;
+//        ItemCount++;
+//        Weight += item.Weight;
+//        Volume += item.Volume;
+
+//        return true;
+//    }
+//}
+
+//public class InventoryItem
+//{
+//    public float Weight { get; init; }
+//    public float Volume { get; init; }
+
+//    public InventoryItem(float weight, float volume)
+//    {
+//        Weight = weight;
+//        Volume = volume;
+//    }
+//}
+
+//public class Arrow() : InventoryItem(0.1f, 0.05f)
+//{
+//    private readonly float BaseDamage = 10f;
+//    public float GetDamage()
+//    {
+//        return BaseDamage * this.Weight;
+//    }
+//}
+
+
+//public class Bow() : InventoryItem(1f, 4f)
+//{
+//    public new string ToString() => "Bow";
+//}
+
+//public class Rope() : InventoryItem(1f, 1.5f)
+//{
+//    public new string ToString() => "Rope";
+//}
+
+//public class Water() : InventoryItem(2f, 4f)
+//{
+//    public new string ToString() => "Water";
+//}
+
+//public class Food() : InventoryItem(1f, 0.5f)
+//{
+//    public new string ToString() => "Food";
+//}
+
+//public class Sword() : InventoryItem(5f, 3f)
+//{
+//    public new string ToString() => "Sword";
+//}
 
 
 // --The Catacombs of the Class--
