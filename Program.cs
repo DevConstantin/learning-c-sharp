@@ -1,55 +1,74 @@
-﻿// Struct
+﻿
+// Records
 
-RunProgram();
+Sword basicSword = new(Material.iron, Gemstone.none, 10f, 2f);
+Sword trainingSword = basicSword with { material = Material.wood};
+Sword soldierSword = basicSword with { material = Material.steel, gemstone = Gemstone.emerald };
+Sword legendarySword = basicSword with { material = Material.binarium, gemstone = Gemstone.bitstone };
 
-void RunProgram()
-{
-    Coordinate[] Coordinates = new Coordinate[3];
-    for (int i = 0; i < 3; i++ )
-    {
-        Console.WriteLine("Input coordinate.");
-        Console.Write("Row: ");
-        byte row = Convert.ToByte(Console.ReadLine());
-        Console.Write("Column: ");
-        byte column = Convert.ToByte(Console.ReadLine());
-        Coordinates[i] = new Coordinate(row, column);
-    }
+Console.WriteLine(basicSword);
+Console.WriteLine(trainingSword);
+Console.WriteLine(soldierSword);
+Console.WriteLine(legendarySword);
 
-    Console.WriteLine();
-    bool allAdjacent = true; 
-    foreach (Coordinate coordinate in Coordinates)    
-    {           
-        Console.WriteLine($"Row: {coordinate.Row}  Coordinate: {coordinate.Column}");
-        allAdjacent = IsAdjacent(coordinate, Coordinates);
-    }
+public record Sword(Material material, Gemstone gemstone, float length, float width);
 
-    Console.WriteLine(allAdjacent ? "Coordinates are adjacent." : "Coordinates are not adjacent.");
-}
+public enum Material { wood, bronze, iron, steel, binarium }
+public enum Gemstone { emerald, amber, sapphire, diamond, bitstone, none }
 
 
-bool IsAdjacent(Coordinate coordinate, Coordinate[] Coordinates)
-{
-    foreach (Coordinate _coordinate in Coordinates)
-    {
-        int rowDiff = Math.Abs(coordinate.Column - _coordinate.Column);
-        int columnDiff = Math.Abs(coordinate.Row - _coordinate.Row);
-        bool adjacent = rowDiff <= 1 || columnDiff <= 1;
-        if (!adjacent) return false;
-    }
-    return true;
-}
+// Struct
+
+//RunProgram();
+
+//void RunProgram()
+//{
+//    Coordinate[] Coordinates = new Coordinate[3];
+//    for (int i = 0; i < 3; i++ )
+//    {
+//        Console.WriteLine("Input coordinate.");
+//        Console.Write("Row: ");
+//        byte row = Convert.ToByte(Console.ReadLine());
+//        Console.Write("Column: ");
+//        byte column = Convert.ToByte(Console.ReadLine());
+//        Coordinates[i] = new Coordinate(row, column);
+//    }
+
+//    Console.WriteLine();
+//    bool allAdjacent = true; 
+//    foreach (Coordinate coordinate in Coordinates)    
+//    {           
+//        Console.WriteLine($"Row: {coordinate.Row}  Coordinate: {coordinate.Column}");
+//        allAdjacent = IsAdjacent(coordinate, Coordinates);
+//    }
+
+//    Console.WriteLine(allAdjacent ? "Coordinates are adjacent." : "Coordinates are not adjacent.");
+//}
 
 
-public struct Coordinate
-{
-    public byte Row { get; init; }
-    public byte Column { get; init; }
+//bool IsAdjacent(Coordinate coordinate, Coordinate[] Coordinates)
+//{
+//    foreach (Coordinate _coordinate in Coordinates)
+//    {
+//        int rowDiff = Math.Abs(coordinate.Column - _coordinate.Column);
+//        int columnDiff = Math.Abs(coordinate.Row - _coordinate.Row);
+//        bool adjacent = rowDiff <= 1 || columnDiff <= 1;
+//        if (!adjacent) return false;
+//    }
+//    return true;
+//}
 
-    public Coordinate(byte row, byte column)
-    {
-        Row = row; Column = column;
-    }
-}
+
+//public struct Coordinate
+//{
+//    public byte Row { get; init; }
+//    public byte Column { get; init; }
+
+//    public Coordinate(byte row, byte column)
+//    {
+//        Row = row; Column = column;
+//    }
+//}
 
 
 // Inheritance & Polymorphism
