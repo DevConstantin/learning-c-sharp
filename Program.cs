@@ -1,84 +1,135 @@
-﻿// Polymorphism
+﻿// Struct
+
+RunProgram();
+
+void RunProgram()
+{
+    Coordinate[] Coordinates = new Coordinate[3];
+    for (int i = 0; i < 3; i++ )
+    {
+        Console.WriteLine("Input coordinate.");
+        Console.Write("Row: ");
+        byte row = Convert.ToByte(Console.ReadLine());
+        Console.Write("Column: ");
+        byte column = Convert.ToByte(Console.ReadLine());
+        Coordinates[i] = new Coordinate(row, column);
+    }
+
+    Console.WriteLine();
+    bool allAdjacent = true; 
+    foreach (Coordinate coordinate in Coordinates)    
+    {           
+        Console.WriteLine($"Row: {coordinate.Row}  Coordinate: {coordinate.Column}");
+        allAdjacent = IsAdjacent(coordinate, Coordinates);
+    }
+
+    Console.WriteLine(allAdjacent ? "Coordinates are adjacent." : "Coordinates are not adjacent.");
+}
+
+
+bool IsAdjacent(Coordinate coordinate, Coordinate[] Coordinates)
+{
+    foreach (Coordinate _coordinate in Coordinates)
+    {
+        int rowDiff = Math.Abs(coordinate.Column - _coordinate.Column);
+        int columnDiff = Math.Abs(coordinate.Row - _coordinate.Row);
+        bool adjacent = rowDiff <= 1 || columnDiff <= 1;
+        if (!adjacent) return false;
+    }
+    return true;
+}
+
+
+public struct Coordinate
+{
+    public byte Row { get; init; }
+    public byte Column { get; init; }
+
+    public Coordinate(byte row, byte column)
+    {
+        Row = row; Column = column;
+    }
+}
 
 
 // Inheritance & Polymorphism
 
 // -- The Old Robot --
 
-Console.WriteLine("Commands: on / off / north / south / west / east");
-Robot robot = new();
+//Console.WriteLine("Commands: on / off / north / south / west / east");
+//Robot robot = new();
 
-for (int i = 0; i < 3; i++)
-{
-    string choice = Console.ReadLine();
-    RobotCommand command = choice switch
-    {
-        "on" => new OnCommand(),
-        "off" => new OffComand(),
-        "north" => new NorthCommand(),
-        "south" => new SouthCommand(),
-        "west" => new WestCommand(),
-        "east" => new EastCommand(),
-    };
+//for (int i = 0; i < 3; i++)
+//{
+//    string choice = Console.ReadLine();
+//    IRobotCommand command = choice switch
+//    {
+//        "on" => new OnCommand(),
+//        "off" => new OffComand(),
+//        "north" => new NorthCommand(),
+//        "south" => new SouthCommand(),
+//        "west" => new WestCommand(),
+//        "east" => new EastCommand(),
+//    };
 
-    robot.Commands[i] = command;
-}
+//    robot.Commands[i] = command;
+//}
 
-Console.WriteLine();
-robot.Run();
+//Console.WriteLine();
+//robot.Run();
 
-public class Robot
-{
-    public int X { get; set; }
-    public int Y { get; set; }
+//public class Robot
+//{
+//    public int X { get; set; }
+//    public int Y { get; set; }
 
-    public bool IsPowered { get; set; }
-    public RobotCommand?[] Commands { get; } = new RobotCommand?[3];
-    public void Run()
-    {
-        foreach (RobotCommand? command in Commands)
-        {
-            command?.Run(this);
-            Console.WriteLine($"[{X} {Y} {IsPowered}]");
-        }
-    }
-}
+//    public bool IsPowered { get; set; }
+//    public IRobotCommand?[] Commands { get; } = new IRobotCommand?[3];
+//    public void Run()
+//    {
+//        foreach (IRobotCommand? command in Commands)
+//        {
+//            command?.Run(this);
+//            Console.WriteLine($"[{X} {Y} {IsPowered}]");
+//        }
+//    }
+//}
 
-public class NorthCommand : RobotCommand
-{
-    public override void Run(Robot robot) {
-        if (!robot.IsPowered) return;
-        robot.Y += 1; 
-    }
-}
+//public class NorthCommand : IRobotCommand
+//{
+//    public void Run(Robot robot) {
+//        if (!robot.IsPowered) return;
+//        robot.Y += 1; 
+//    }
+//}
 
-public class SouthCommand : RobotCommand
-{
-    public override void Run(Robot robot) {
-        if (!robot.IsPowered) return;
-        robot.Y -= 1; 
-    }
-}
+//public class SouthCommand : IRobotCommand
+//{
+//    public void Run(Robot robot) {
+//        if (!robot.IsPowered) return;
+//        robot.Y -= 1; 
+//    }
+//}
 
-public class WestCommand : RobotCommand
-{
-    public override void Run(Robot robot) {
-        if (!robot.IsPowered) return;
-        robot.X -= 1; 
-    }
-}
+//public class WestCommand : IRobotCommand
+//{
+//    public void Run(Robot robot) {
+//        if (!robot.IsPowered) return;
+//        robot.X -= 1; 
+//    }
+//}
 
-public class EastCommand : RobotCommand
-{
-    public override void Run(Robot robot) {
-        if (!robot.IsPowered) return;
-        robot.X += 1; 
-    }
-}
+//public class EastCommand : IRobotCommand
+//{
+//    public void Run(Robot robot) {
+//        if (!robot.IsPowered) return;
+//        robot.X += 1; 
+//    }
+//}
 
-public class OnCommand : RobotCommand { public override void Run(Robot robot) { robot.IsPowered = true; } }
-public class OffComand : RobotCommand { public override void Run(Robot robot) {robot.IsPowered = false; } }
-public abstract class RobotCommand { public abstract void Run(Robot robot); }
+//public class OnCommand : IRobotCommand { public void Run(Robot robot) { robot.IsPowered = true; } }
+//public class OffComand : IRobotCommand { public void Run(Robot robot) {robot.IsPowered = false; } }
+//public interface IRobotCommand { void Run(Robot robot); }
 
 // -- Pack -- 
 //Arrow arrow = new();
