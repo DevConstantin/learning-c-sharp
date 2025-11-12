@@ -1,20 +1,53 @@
 ﻿
+
+// Generics
+
+ColoredItem<Sword> BlueSword = new(new Sword(), ConsoleColor.Blue);
+ColoredItem<Bow> RedBow = new(new Bow(), ConsoleColor.Red);
+ColoredItem<Axe> GreenAxe = new(new Axe(), ConsoleColor.Green);
+
+BlueSword.Display();
+RedBow.Display();
+GreenAxe.Display();
+
+public class Sword { }
+public class Bow { }
+public class Axe { }
+
+public class ColoredItem<T>
+{
+    public T Item { get; set; }
+    public ConsoleColor Color { get; set; }
+
+    public ColoredItem(T item, ConsoleColor color)
+    {
+        Item = item;
+        Color = color;
+    }
+
+    public void Display()
+    {
+        Console.ForegroundColor = Color;
+        Console.WriteLine(Item?.ToString());
+    }
+}
+
 // Records
 
-Sword basicSword = new(Material.iron, Gemstone.none, 10f, 2f);
-Sword trainingSword = basicSword with { material = Material.wood};
-Sword soldierSword = basicSword with { material = Material.steel, gemstone = Gemstone.emerald };
-Sword legendarySword = basicSword with { material = Material.binarium, gemstone = Gemstone.bitstone };
+//Sword basicSword = new(Material.iron, Gemstone.none, 10f, 2f);
+//Sword trainingSword = basicSword with { material = Material.wood};
+//Sword soldierSword = basicSword with { material = Material.steel, gemstone = Gemstone.emerald };
+//Sword legendarySword = basicSword with { material = Material.binarium, gemstone = Gemstone.bitstone };
 
-Console.WriteLine(basicSword);
-Console.WriteLine(trainingSword);
-Console.WriteLine(soldierSword);
-Console.WriteLine(legendarySword);
+//Console.WriteLine(basicSword);
+//Console.WriteLine(trainingSword);
+//Console.WriteLine(soldierSword);
+//Console.WriteLine(legendarySword);
 
-public record Sword(Material material, Gemstone gemstone, float length, float width);
+//public record Sword(Material material, Gemstone gemstone, float length, float width);
 
-public enum Material { wood, bronze, iron, steel, binarium }
-public enum Gemstone { emerald, amber, sapphire, diamond, bitstone, none }
+//public enum Material { wood, bronze, iron, steel, binarium }
+//public enum Gemstone { emerald, amber, sapphire, diamond, bitstone, none }
 
 
 // Struct
