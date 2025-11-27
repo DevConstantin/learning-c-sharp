@@ -2,95 +2,95 @@
 
 // Hunting the Manticore 2.0 (Using random, converted to single player)
 
-// Initial HP
-int shipHealth = 10;
-int cityHealth = 15;
+//// Initial HP
+//int shipHealth = 10;
+//int cityHealth = 15;
 
-// Config
-int RANGE_MIN = 25;
-int RANGE_MAX = 100;
+//// Config
+//int RANGE_MIN = 25;
+//int RANGE_MAX = 100;
 
-Random random = new Random();
-int shipDistance = random.Next(RANGE_MIN, RANGE_MAX + 1); // Replaced with random (previously selected by player)
+//Random random = new Random();
+//int shipDistance = random.Next(RANGE_MIN, RANGE_MAX + 1); // Replaced with random (previously selected by player)
 
-Console.Clear();
-Console.WriteLine("It is your turn.");
-for (int round = 1; round < 15; round++)
-{
-    Console.WriteLine("-----------------------------------------------------");
-    Console.WriteLine($"STATUS: Round: {round}  City: {cityHealth}/15  Manticore: {shipHealth}/10");
-    int damage = GetCannonDamage(round);
-    Console.WriteLine($"The cannon is expected to deal {damage} damage this round.");
-    int desiredRange = AskForNumberInRange("Enter desired cannon range: ", RANGE_MIN, RANGE_MAX);
-    DamageManticore(desiredRange, damage);
+//Console.Clear();
+//Console.WriteLine("It is your turn.");
+//for (int round = 1; round < 15; round++)
+//{
+//    Console.WriteLine("-----------------------------------------------------");
+//    Console.WriteLine($"STATUS: Round: {round}  City: {cityHealth}/15  Manticore: {shipHealth}/10");
+//    int damage = GetCannonDamage(round);
+//    Console.WriteLine($"The cannon is expected to deal {damage} damage this round.");
+//    int desiredRange = AskForNumberInRange("Enter desired cannon range: ", RANGE_MIN, RANGE_MAX);
+//    DamageManticore(desiredRange, damage);
 
-    // End the game if the ship has been destroyed
-    if (shipHealth <= 0)
-    {
-        Console.ForegroundColor = ConsoleColor.Blue;
-        Console.WriteLine("The Manticore has been destroyed! The city of Consolas has been saved!");
-        Console.ForegroundColor = ConsoleColor.White;
-        break;
-    }
+//    // End the game if the ship has been destroyed
+//    if (shipHealth <= 0)
+//    {
+//        Console.ForegroundColor = ConsoleColor.Blue;
+//        Console.WriteLine("The Manticore has been destroyed! The city of Consolas has been saved!");
+//        Console.ForegroundColor = ConsoleColor.White;
+//        break;
+//    }
 
-    // Damage the city, and end the gaem if the city's health is 0
-    cityHealth -= 1;
-    if (cityHealth <= 0)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("The city of Consolas has been destroyed! The Uncoded One has won. It is a dark day...");
-        Console.ForegroundColor = ConsoleColor.White;
-        break;
-    }
-}
+//    // Damage the city, and end the gaem if the city's health is 0
+//    cityHealth -= 1;
+//    if (cityHealth <= 0)
+//    {
+//        Console.ForegroundColor = ConsoleColor.Red;
+//        Console.WriteLine("The city of Consolas has been destroyed! The Uncoded One has won. It is a dark day...");
+//        Console.ForegroundColor = ConsoleColor.White;
+//        break;
+//    }
+//}
 
-void DamageManticore(int desiredRange, int damage)
-{
-    if (desiredRange < shipDistance)
-    {
-        Console.WriteLine("That round FELL SHORT of the target.");
-    }
-    else if (desiredRange > shipDistance)
-    {
-        Console.WriteLine("That round OVERSHOT the target.");
-    }
-    else
-    {
-        Console.WriteLine("That round was a DIRECT HIT!");
-        shipHealth -= damage;
-    }
-}
-int GetCannonDamage(int round)
-{
-    int damage = 1;
-    bool thirdTurn = round % 3 == 0;
-    bool fifthTurn = round % 5 == 0;
-    if (thirdTurn && fifthTurn) // Damage from both gems
-    {
-        damage = 10;
-    }
-    else if (thirdTurn) // Every third turn of the crank, the fire gem activates
-    {
-        damage = 3;
-    }
-    else if (fifthTurn) // Every fifth turn of the crank, the electric gem activates
-    {
-        damage = 3;
-    }
-    return damage;
-}
+//void DamageManticore(int desiredRange, int damage)
+//{
+//    if (desiredRange < shipDistance)
+//    {
+//        Console.WriteLine("That round FELL SHORT of the target.");
+//    }
+//    else if (desiredRange > shipDistance)
+//    {
+//        Console.WriteLine("That round OVERSHOT the target.");
+//    }
+//    else
+//    {
+//        Console.WriteLine("That round was a DIRECT HIT!");
+//        shipHealth -= damage;
+//    }
+//}
+//int GetCannonDamage(int round)
+//{
+//    int damage = 1;
+//    bool thirdTurn = round % 3 == 0;
+//    bool fifthTurn = round % 5 == 0;
+//    if (thirdTurn && fifthTurn) // Damage from both gems
+//    {
+//        damage = 10;
+//    }
+//    else if (thirdTurn) // Every third turn of the crank, the fire gem activates
+//    {
+//        damage = 3;
+//    }
+//    else if (fifthTurn) // Every fifth turn of the crank, the electric gem activates
+//    {
+//        damage = 3;
+//    }
+//    return damage;
+//}
 
-int AskForNumberInRange(string text, int min, int max)
-{
-    Console.Write(text);
-    int num = Convert.ToInt32(Console.ReadLine());
-    while (num < min || num > max)
-    {
-        Console.WriteLine($"Let's try again. Input a number between {min} and {max}.");
-        num = Convert.ToInt32(Console.ReadLine());
-    }
-    return num;
-}
+//int AskForNumberInRange(string text, int min, int max)
+//{
+//    Console.Write(text);
+//    int num = Convert.ToInt32(Console.ReadLine());
+//    while (num < min || num > max)
+//    {
+//        Console.WriteLine($"Let's try again. Input a number between {min} and {max}.");
+//        num = Convert.ToInt32(Console.ReadLine());
+//    }
+//    return num;
+//}
 
 
 // Generics
@@ -141,10 +141,10 @@ public record Sword(Material material, Gemstone gemstone, float length, float wi
 
 public enum Material { wood, bronze, iron, steel, binarium }
 public enum Gemstone { emerald, amber, sapphire, diamond, bitstone, none }
+*/
 
-
+/*
 // Struct
-
 RunProgram();
 
 void RunProgram()
@@ -196,28 +196,32 @@ public struct Coordinate
     }
 }
 
+*/
 
 // Inheritance & Polymorphism
 
 // -- The Old Robot --
 
-Console.WriteLine("Commands: on / off / north / south / west / east");
+Console.WriteLine("Commands: on / off / north / south / west / east. Type 'run' after importing the desired commands.");
 Robot robot = new();
 
-for (int i = 0; i < 3; i++)
+while (true)
 {
-    string choice = Console.ReadLine();
+    string? choice = Console.ReadLine();
+    if (choice == "run") break;
+
     IRobotCommand command = choice switch
     {
         "on" => new OnCommand(),
-        "off" => new OffComand(),
+        "off" => new OffCommand(),
         "north" => new NorthCommand(),
         "south" => new SouthCommand(),
         "west" => new WestCommand(),
         "east" => new EastCommand(),
+        _ => new OffCommand(),
     };
 
-    robot.Commands[i] = command;
+    robot.Commands.Add(command);
 }
 
 Console.WriteLine();
@@ -229,7 +233,7 @@ public class Robot
     public int Y { get; set; }
 
     public bool IsPowered { get; set; }
-    public IRobotCommand?[] Commands { get; } = new IRobotCommand?[3];
+    public List<IRobotCommand?> Commands { get; } = new List<IRobotCommand?>();
     public void Run()
     {
         foreach (IRobotCommand? command in Commands)
@@ -243,39 +247,36 @@ public class Robot
 public class NorthCommand : IRobotCommand
 {
     public void Run(Robot robot) {
-        if (!robot.IsPowered) return;
-        robot.Y += 1; 
+        if (robot.IsPowered) robot.Y += 1; ;
     }
 }
 
 public class SouthCommand : IRobotCommand
 {
     public void Run(Robot robot) {
-        if (!robot.IsPowered) return;
-        robot.Y -= 1; 
+        if (robot.IsPowered) robot.Y -= 1;
     }
 }
 
 public class WestCommand : IRobotCommand
 {
     public void Run(Robot robot) {
-        if (!robot.IsPowered) return;
-        robot.X -= 1; 
+        if (robot.IsPowered) robot.X -= 1;
     }
 }
 
 public class EastCommand : IRobotCommand
 {
     public void Run(Robot robot) {
-        if (!robot.IsPowered) return;
-        robot.X += 1; 
+        if (robot.IsPowered) robot.X += 1;
     }
 }
 
 public class OnCommand : IRobotCommand { public void Run(Robot robot) { robot.IsPowered = true; } }
-public class OffComand : IRobotCommand { public void Run(Robot robot) {robot.IsPowered = false; } }
+public class OffCommand : IRobotCommand { public void Run(Robot robot) {robot.IsPowered = false; } }
 public interface IRobotCommand { void Run(Robot robot); }
 
+/*
 // -- Pack -- 
 Arrow arrow = new();
 Console.WriteLine("Arrow damage:" + arrow.GetDamage());
